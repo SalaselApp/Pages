@@ -20,6 +20,9 @@
 # production
 /build
 
+# local design references (not shipped or committed)
+/.design-reference/
+
 # misc
 .DS_Store
 *.pem
