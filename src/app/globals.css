@@ -7,6 +7,11 @@
 :root {
   --canvas: #050c19;
   --canvas-raised: #080f1c;
+  /* Hero product panels. Sampled from the comp's panel interiors (~#19212c)
+     against its ~#0a131f page background: an opaque, slightly lifted slate, not
+     a translucent wash over whatever happens to sit behind it. */
+  --panel: #161f2b;
+  --panel-hover: #1b2532;
   --cream: #f4efe2;
   --cream-dim: #cfc9bb;
   --cream-faint: #8f8d85;
@@ -36,6 +41,8 @@
 @theme inline {
   --color-canvas: var(--canvas);
   --color-canvas-raised: var(--canvas-raised);
+  --color-panel: var(--panel);
+  --color-panel-hover: var(--panel-hover);
   --color-cream: var(--cream);
   --color-cream-dim: var(--cream-dim);
   --color-cream-faint: var(--cream-faint);

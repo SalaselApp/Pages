@@ -12,6 +12,11 @@ import type { Destination } from "@/config/links";
  * plus `h-full` here makes them share the tallest row height, and the CTA is
  * pinned to the bottom with `mt-auto`, so the buttons line up across both
  * panels no matter how the titles wrap.
+ *
+ * The fill is opaque (`bg-panel`), as in the comp. A translucent fill let the
+ * decorative network and the hero's radial wash read straight through the
+ * panels, which both muddied the text background and made the two paths look
+ * unequal whenever different amounts of the field sat behind each one.
  */
 export function ProductPath({
   eyebrow,
@@ -32,7 +37,7 @@ export function ProductPath({
   const accentText = accent === "lime" ? "text-lime-brand" : "text-teal-brand";
 
   return (
-    <div className="border-hairline bg-canvas-raised/50 hover:border-hairline-strong relative flex h-full flex-col gap-3 rounded-2xl border p-4 backdrop-blur-[2px] transition-colors duration-300 sm:gap-4 sm:p-5">
+    <div className="border-hairline bg-panel hover:bg-panel-hover hover:border-hairline-strong relative flex h-full flex-col gap-3 rounded-2xl border p-4 shadow-[0_1px_0_0_rgba(226,241,194,0.05)_inset,0_18px_40px_-24px_rgba(0,0,0,0.8)] transition-colors duration-300 sm:gap-4 sm:p-5">
       <div className="flex items-center gap-3.5">
         {/*
           The icon sits directly on the panel with no inner frame: a
