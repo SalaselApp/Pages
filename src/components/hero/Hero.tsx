@@ -1,0 +1,100 @@
+import { getLocale, getTranslations } from "next-intl/server";
+import { DecorativeNetwork } from "@/components/hero/DecorativeNetwork";
+import { HeroMark } from "@/components/hero/HeroMark";
+import { AppIcon, ExtensionIcon } from "@/components/hero/ProductIcons";
+import { ProductPath } from "@/components/hero/ProductPath";
+import { SiteHeader } from "@/components/SiteHeader";
+import { links } from "@/config/links";
+import { localeDirection, type AppLocale } from "@/i18n/routing";
+
+/**
+ * Hero: one identity, two equal product choices.
+ *
+ * Desktop follows the approved comp hierarchy (minimal top bar, large glowing
+ * mark above an Arabic-primary headline, then two side-by-side product paths).
+ * Mobile is an intentional adaptation rather than a squeezed desktop scene.
+ */
+export async function Hero() {
+  const t = await getTranslations("hero");
+  const locale = (await getLocale()) as AppLocale;
+  // The equivalent line is always written in the other language.
+  const equivalentLocale = locale === "ar" ? "en" : "ar";
+
+  // `min-h-svh` plus a column layout makes the hero one self-contained screen:
+  // the header pins to the top, the content column takes the remaining space,
+  // and the product paths sit at the bottom without needing a scroll. `svh`
+  // rather than `vh` so mobile browser chrome does not push the paths off.
+  // Gaps are `vh`-proportional so the scene compresses on short viewports
+  // instead of overflowing.
+  return (
+    <section className="relative isolate flex min-h-svh flex-col overflow-hidden">
+      {/* Decorative layers, all kept off the interaction layer. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-10%,rgba(47,143,107,0.20),transparent_62%)]" />
+        <DecorativeNetwork />
+      </div>
+
+      <SiteHeader />
+
+      <div className="mx-auto flex w-full max-w-[86rem] flex-1 flex-col items-center justify-center gap-[2vh] px-6 pt-[1vh] pb-[2vh] sm:gap-[3vh] sm:px-10">
+        {/* Glowing Salasel mark. Not lazy-loaded: it is the primary hero mark. */}
+        <div className="rise">
+          <HeroMark />
+        </div>
+
+        <div className="flex w-full max-w-4xl flex-col items-center gap-2 text-center">
+          {/* The one meaningful h1 on the page. */}
+          <h1
+            className="rise text-cream text-[clamp(1.75rem,5vw,3.25rem)] leading-[1.2] font-semibold tracking-[-0.01em] text-balance"
+            style={{ animationDelay: "0.08s" }}
+          >
+            {t("headline")}
+          </h1>
+
+          {/*
+            The other language's equivalent line, deliberately smaller. `lang`
+            and `dir` switch so screen readers and font selection follow script.
+          */}
+          <p
+            className="rise text-cream-dim text-[clamp(0.95rem,2vw,1.25rem)] leading-relaxed"
+            lang={equivalentLocale}
+            dir={localeDirection[equivalentLocale]}
+            style={{ animationDelay: "0.16s" }}
+          >
+            {t("equivalent")}
+          </p>
+        </div>
+
+        {/* Two equal paths: side by side from `md` up, stacked full-width below. */}
+        <div
+          className="rise w-full max-w-4xl"
+          style={{ animationDelay: "0.24s" }}
+        >
+          <h2 className="sr-only">{t("choicesLabel")}</h2>
+          {/* `items-stretch` so both panels adopt the tallest row height. */}
+          <div className="grid w-full grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:gap-5">
+            <ProductPath
+              accent="teal"
+              eyebrow={t("app.eyebrow")}
+              title={t("app.title")}
+              cta={t("app.cta")}
+              destination={links.app}
+              icon={<AppIcon className="size-11 sm:size-12" />}
+            />
+            <ProductPath
+              accent="lime"
+              eyebrow={t("extension.eyebrow")}
+              title={t("extension.title")}
+              cta={t("extension.cta")}
+              destination={links.extension}
+              icon={<ExtensionIcon className="size-11 sm:size-12" />}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
