@@ -1,33 +1,5 @@
 import Image from "next/image";
 
-/**
- * The glowing Salasel mark, centered above the headline as in the comp.
- *
- * `01-hero-logo-glow.png` is a 1672x941 canvas whose artwork occupies only
- * x 566-1042, y 170-729, leaving wide transparent margins. Rendering it whole
- * would spend a large share of the hero's vertical budget on empty pixels, so
- * the asset is used unchanged and cropped purely with CSS: the wrapper takes the
- * artwork's own aspect ratio and the image is scaled and offset inside it.
- * Values are the measured alpha bounds, not a redraw.
- *
- * The asset's own baked-in glow is much weaker than the comp's, where the mark
- * sits in a warm green bloom. Measured off the comp along a horizontal line
- * through the mark's centre, in units of the artwork's half-width: the glow is
- * ~+53 luminance over page background at the artwork edge, ~+12 at 1.3x, and
- * back to background by ~1.6x. So it is bright and tight, not a broad wash — an
- * earlier wider version read as fog across the whole upper page.
- *
- * Three stacked layers reproduce that curve, since one radial gradient cannot be
- * both intense at the artwork edge and fully gone shortly after. Each is sized
- * as a percentage of the artwork's *width* and forced square, so the falloff is
- * radially even rather than stretched by the artwork's taller box. A layer of
- * width `k%` has radius `k/100` in half-width units, and its gradient fades out
- * by ~70% of that, which is what keeps the outer layer inside the comp's ~1.6x.
- *
- * They breathe on different durations so the glow never pulses as one flat unit.
- *
- * There is deliberately no oversized watermark of the mark behind the headline.
- */
 
 const ASSET = { width: 1672, height: 941 } as const;
 const ART = { left: 566, top: 170, width: 476, height: 559 } as const;
@@ -61,7 +33,7 @@ export function HeroMark() {
         style={{ aspectRatio: `${ART.width} / ${ART.height}` }}
       >
         <Image
-          src="/images/landing/extracted/01-hero-logo-glow.png"
+          src="/images/landing/extracted/01-hero-logo-glow.webp"
           alt=""
           aria-hidden="true"
           width={ASSET.width}
