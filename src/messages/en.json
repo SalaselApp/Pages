@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "title": "Salasel — Learn with intention. Stay the course.",
+    "description": "A focused learning platform with curated series, plus an optional browser extension that calms YouTube. They work together, and each stands on its own."
+  },
+  "brand": {
+    "name": "Salasel"
+  },
+  "nav": {
+    "skipToContent": "Skip to content",
+    "languageLabel": "Language"
+  },
+  "hero": {
+    "headline": "Learn with intention. Stay the course.",
+    "equivalent": "اختر ما ينفعك، واثبت عليه.",
+    "choicesLabel": "Two ways to start",
+    "app": {
+      "eyebrow": "Salasel App",
+      "title": "A home for deliberate learning",
+      "cta": "Explore Salasel"
+    },
+    "extension": {
+      "eyebrow": "Chrome Extension",
+      "title": "YouTube on your terms",
+      "cta": "Add to Chrome"
+    }
+  }
+}
