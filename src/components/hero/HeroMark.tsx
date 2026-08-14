@@ -10,9 +10,23 @@ import Image from "next/image";
  * artwork's own aspect ratio and the image is scaled and offset inside it.
  * Values are the measured alpha bounds, not a redraw.
  *
- * The asset already carries its own baked-in glow, so the only additions here
- * are two soft radial halos that breathe out of phase with each other. There is
- * deliberately no oversized watermark of the mark behind the headline.
+ * The asset's own baked-in glow is much weaker than the comp's, where the mark
+ * sits in a warm green bloom. Measured off the comp along a horizontal line
+ * through the mark's centre, in units of the artwork's half-width: the glow is
+ * ~+53 luminance over page background at the artwork edge, ~+12 at 1.3x, and
+ * back to background by ~1.6x. So it is bright and tight, not a broad wash — an
+ * earlier wider version read as fog across the whole upper page.
+ *
+ * Three stacked layers reproduce that curve, since one radial gradient cannot be
+ * both intense at the artwork edge and fully gone shortly after. Each is sized
+ * as a percentage of the artwork's *width* and forced square, so the falloff is
+ * radially even rather than stretched by the artwork's taller box. A layer of
+ * width `k%` has radius `k/100` in half-width units, and its gradient fades out
+ * by ~70% of that, which is what keeps the outer layer inside the comp's ~1.6x.
+ *
+ * They breathe on different durations so the glow never pulses as one flat unit.
+ *
+ * There is deliberately no oversized watermark of the mark behind the headline.
  */
 
 const ASSET = { width: 1672, height: 941 } as const;
@@ -21,15 +35,20 @@ const ART = { left: 566, top: 170, width: 476, height: 559 } as const;
 export function HeroMark() {
   return (
     <div className="relative flex w-full justify-center">
-      {/* Wide ambient halo. */}
+      {/* Outer falloff: reaches ~1.6x the artwork half-width, as in the comp. */}
       <div
         aria-hidden="true"
-        className="hero-glow pointer-events-none absolute top-1/2 left-1/2 h-[260%] w-[260%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(47,143,107,0.26),transparent_62%)]"
+        className="hero-glow pointer-events-none absolute top-1/2 left-1/2 aspect-square w-[225%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(47,143,107,0.34)_0%,rgba(47,143,107,0.13)_34%,transparent_66%)]"
       />
-      {/* Tighter core glow, breathing out of phase with the halo. */}
+      {/* Mid bloom: carries most of the visible glow just past the artwork. */}
       <div
         aria-hidden="true"
-        className="hero-sheen pointer-events-none absolute top-1/2 left-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(67,160,138,0.30),transparent_58%)]"
+        className="hero-sheen pointer-events-none absolute top-1/2 left-1/2 aspect-square w-[150%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(72,168,140,0.44)_0%,rgba(58,145,116,0.22)_42%,transparent_70%)]"
+      />
+      {/* Tight core: the bright halo hugging the artwork itself. */}
+      <div
+        aria-hidden="true"
+        className="hero-core pointer-events-none absolute top-1/2 left-1/2 aspect-square w-[105%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(132,214,176,0.40)_0%,rgba(72,168,140,0.24)_46%,transparent_72%)]"
       />
       {/*
         In the comp the mark stands about a third of the canvas tall. Sizing it

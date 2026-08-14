@@ -236,14 +236,25 @@ body {
   animation: salasel-spark-slide 9s linear infinite;
 }
 
+/* Layered halo behind the mark.
+ *
+ * The comp's glow reads as a bright warm-green core that stays strong out to
+ * roughly the artwork's own radius, then falls away over about the same distance
+ * again. One radial gradient cannot do both, so there are three: a tight core, a
+ * mid bloom, and a wide ambient wash. */
 .hero-glow {
   animation: salasel-glow-breathe 9s ease-in-out infinite;
 }
 
-/* Deliberately a different duration from `.hero-glow` so the two glow layers
-   drift in and out of phase instead of pulsing as one. */
+/* Deliberately a different duration from `.hero-glow` so the glow layers drift
+   in and out of phase instead of pulsing as one. */
 .hero-sheen {
   animation: salasel-mark-sheen 14s ease-in-out infinite;
+}
+
+.hero-core {
+  animation: salasel-glow-breathe 11s ease-in-out infinite;
+  animation-delay: -4s;
 }
 
 
@@ -262,6 +273,7 @@ body {
   .motif-spark,
   .hero-glow,
   .hero-sheen,
+  .hero-core,
   .rise {
     animation: none !important;
   }
