@@ -142,32 +142,33 @@ body {
   }
 }
 
-/* A light travelling from one node to the next along an edge.
+/* A light travelling from one node to the next along a link.
  *
- * Animates `transform` only, never `left`: animating a length property forces
- * layout on every frame, and with dozens of sparks in flight that is enough to
- * stall the main thread.
+ * The spark is the same <path> as its link, drawn as a short dash and slid
+ * along with `stroke-dashoffset`. Because the paths declare `pathLength="1"`,
+ * the dash pattern is in normalised units, so one set of keyframes covers every
+ * link regardless of its real length and the light can never leave the line.
  *
  * Only the first ~40% of the cycle is a visible traverse; the rest is a pause,
  * which keeps the field calm and staggers the sparks apart.
  */
 @keyframes salasel-spark-slide {
   0% {
-    transform: translate3d(0, 0, 0);
+    stroke-dashoffset: 0.12;
     opacity: 0;
   }
   4% {
-    opacity: 0.85;
+    opacity: 0.9;
   }
   32% {
-    opacity: 0.85;
+    opacity: 0.9;
   }
   40% {
-    transform: translate3d(100%, 0, 0);
+    stroke-dashoffset: -1;
     opacity: 0;
   }
   100% {
-    transform: translate3d(100%, 0, 0);
+    stroke-dashoffset: -1;
     opacity: 0;
   }
 }
@@ -175,7 +176,12 @@ body {
 .motif {
   position: absolute;
   inset-block: 0;
-  width: clamp(9rem, 16vw, 18rem);
+  /* Wider than the old DOM motif: the geometry now runs off the page edge, so
+     the visible band needs room for the crop as well as the field itself. */
+  width: clamp(11rem, 22vw, 24rem);
+  /* The motif is cropped at the page edge by design (`slice`), so anything
+     spilling the other way would only widen the scroll area. */
+  overflow: visible;
   pointer-events: none;
   animation: salasel-motif-drift 19s ease-in-out infinite;
   /* Promote once, so the drift never repaints the nodes underneath. */
@@ -187,23 +193,9 @@ body {
   animation-delay: -7s;
 }
 
-.motif-node,
-.motif-edge {
-  position: absolute;
-  pointer-events: none;
-}
-
 .motif-node {
-  --node-scale: 1;
-  /* The comp's node blobs measure ~8px across on a 1672px canvas, so a 5px
-     resting dot with a glow around it lands at the same visual weight. */
-  width: calc(5px * var(--node-scale));
-  height: calc(5px * var(--node-scale));
-  margin-top: calc(-2.5px * var(--node-scale));
-  margin-left: calc(-2.5px * var(--node-scale));
-  border-radius: 9999px;
-  background-color: var(--net-node);
-  opacity: 0.32;
+  fill: var(--net-node);
+  opacity: 0.3;
   /* Resting nodes are deliberately static. The whole-motif drift already gives
      them movement, and animating each one separately cost far more than it
      showed. */
@@ -211,61 +203,37 @@ body {
 
 /* A few softly glowing active nodes, not all of them. */
 .motif-node[data-active="true"] {
-  width: calc(7px * var(--node-scale));
-  height: calc(7px * var(--node-scale));
-  margin-top: calc(-3.5px * var(--node-scale));
-  margin-left: calc(-3.5px * var(--node-scale));
-  background-color: var(--net-node-core);
-  box-shadow:
-    0 0 7px rgba(149, 209, 149, 0.75),
-    0 0 20px rgba(52, 96, 76, 0.55);
+  fill: var(--net-node-core);
+  filter: drop-shadow(0 0 3px rgba(149, 209, 149, 0.85))
+    drop-shadow(0 0 8px rgba(88, 168, 122, 0.5));
   animation: salasel-node-pulse 6.5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
-.motif-edge {
-  height: 1px;
-  transform-origin: 0 50%;
-  background: linear-gradient(
-    to right,
-    rgba(52, 96, 76, 0) 0%,
-    rgba(52, 96, 76, 0.75) 22%,
-    rgba(149, 209, 149, 0.45) 62%,
-    rgba(52, 96, 76, 0) 100%
-  );
-  opacity: 0.5;
+.motif-link {
+  stroke: var(--net-line);
+  /* `vector-effect` keeps the hairline at 1px however the viewBox is scaled;
+     without it `slice` scaling would thicken the lines on tall viewports. */
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  opacity: 0.55;
   animation: salasel-edge-shimmer 11s ease-in-out infinite;
 }
 
-/* The travelling light. Sized in px but positioned along the parent edge. */
-/*
- * The spark is a full-width, zero-height track spanning its parent edge, so a
- * `translateX(100%)` traverse is exactly one edge length regardless of size.
- * The visible dot is the pseudo-element, which keeps the moving layer cheap.
- */
 .motif-spark {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 0;
+  stroke: var(--net-node-core);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  /* Short visible dash, then a gap longer than the whole path so only one
+     light is ever in flight per link. */
+  stroke-dasharray: 0.06 1;
   opacity: 0;
-  /* Long cycle with a short visible window, so only a few sparks are in
-     flight at any moment rather than every edge lighting up at once. */
-  animation: salasel-spark-slide 5s linear infinite;
-}
-
-.motif-spark::after {
-  content: "";
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 2px;
-  height: 2px;
-  border-radius: 9999px;
-  background-color: var(--net-node-core);
-  box-shadow:
-    0 0 4px rgba(149, 209, 149, 0.75),
-    0 0 10px rgba(52, 96, 76, 0.45);
+  /* Long cycle with a short visible window, so only a few sparks travel at any
+     moment rather than every link lighting up at once. */
+  animation: salasel-spark-slide 9s linear infinite;
 }
 
 .hero-glow {
@@ -290,7 +258,7 @@ body {
   .motif,
   .motif-end,
   .motif-node[data-active="true"],
-  .motif-edge,
+  .motif-link,
   .motif-spark,
   .hero-glow,
   .hero-sheen,
