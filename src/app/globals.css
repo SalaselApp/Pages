@@ -19,6 +19,17 @@
   --teal: #43a08a;
   --lime: #d9ea9f;
 
+  /* Light "paper" section (Section 2). The meaning comp inverts the page: a flat
+     warm cream field with near-black green ink, no background glow at all. All
+     three values are sampled from `02-meaning.png` — the paper is a touch
+     lighter and cooler than `--cream`, so it gets its own token rather than
+     reusing the dark theme's type colour as a background. */
+  --paper: #f7f4ec;
+  --ink: #032317;
+  /* Accent for the eyebrow rule and the numbered markers. Deep enough to hold
+     contrast on paper, where `--teal` would wash out. */
+  --teal-deep: #056a62;
+
   /* Sampled from the approved hero comp's edge regions: the lines are a muted
      slate-teal and the glowing nodes a soft mint green, not a yellow-lime. */
   --net-line: #34604c;
@@ -51,6 +62,9 @@
   --color-lime-brand: var(--lime);
   --color-hairline: var(--hairline);
   --color-hairline-strong: var(--hairline-strong);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-teal-deep: var(--teal-deep);
 }
 
 html {
@@ -272,6 +286,58 @@ body {
   animation: salasel-rise 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
+/* ---------------------------------------------------------------------------
+ * Left-to-right artwork reveal (Section 2 chain)
+ *
+ * The image emerges across its own width: an `inset()` clip opens from the left
+ * edge, combined with a restrained fade and a small horizontal slide. Only
+ * `clip-path`, `opacity`, and `transform` are animated, so no layout dimension
+ * ever changes and the reserved box holds its size throughout.
+ *
+ * Direction is physical, not logical. `inset(0 100% 0 0)` always leaves the left
+ * edge fixed and sweeps the right-hand cut outward, so the chain reveals
+ * left-to-right in Arabic RTL exactly as in English LTR.
+ *
+ * A trailing soft edge would need a mask-image gradient animated in parallel;
+ * `clip-path` alone reads as a clean wipe, which suits the artwork's own hard
+ * silhouette better than a blurred seam.
+ * ------------------------------------------------------------------------- */
+
+@keyframes salasel-reveal-ltr {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: translate3d(-30px, 0, 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/*
+ * The clipped element is deliberately a *child* of the observed one.
+ *
+ * `clip-path` shrinks an element's visible area, and Chrome factors that into
+ * intersection geometry, so an observer watching the clipped node itself would
+ * see zero visible area and never fire. Keeping the state flags on the parent
+ * leaves the observed box unclipped and full-size.
+ *
+ * Both flags are absent until the island mounts, so with no JavaScript no rule
+ * here matches and the artwork simply renders.
+ */
+[data-reveal-ready="true"] .reveal-ltr {
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+  will-change: clip-path, opacity, transform;
+}
+
+/* Set once, when the section first intersects the viewport. */
+[data-reveal-shown="true"] .reveal-ltr {
+  animation: salasel-reveal-ltr 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motif,
   .motif-end,
@@ -283,6 +349,16 @@ body {
   .hero-core,
   .rise {
     animation: none !important;
+  }
+
+  /* Show the artwork immediately: no mask, no movement, no delayed visibility. */
+  [data-reveal-ready="true"] .reveal-ltr,
+  [data-reveal-shown="true"] .reveal-ltr {
+    animation: none !important;
+    clip-path: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto;
   }
 
   /* The travelling lights carry no information, so they simply go away. */
