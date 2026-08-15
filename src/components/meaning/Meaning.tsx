@@ -59,17 +59,22 @@ export async function Meaning() {
       */}
       <div className="relative z-10 mx-auto w-full max-w-[86rem] px-6 pt-20 pb-12 sm:px-10 sm:pt-24 xl:ml-auto xl:pt-[12vh] xl:pb-[6vh]">
         {/*
-          The comp's copy block spans about 0.43 of the canvas width, which is also
-          about what the two heading lines need before English wraps to three.
+          Column width is capped well clear of the artwork's own right edge
+          (`min(60vw, ...)` in `MeaningChain`), so it holds at every desktop size
+          instead of depending on how tall the column happens to grow at this
+          larger type scale. `min-h-svh` on the section is only a floor, so a
+          longer English paragraph — or the pair wrapping to two lines when a
+          narrower desktop width can't hold them on one — simply grows the
+          section rather than running under the chain.
         */}
-        <div className="flex flex-col gap-10 xl:ml-auto xl:w-[46%]">
+        <div className="flex flex-col gap-10 xl:ml-auto xl:w-[38%]">
           {/*
             Eyebrow with the comp's thin vertical rule. The rule is decorative, so
             it is a border on the text itself rather than an element a screen
             reader has to step over. `border-s` + `ps-` are logical, so it moves to
             the correct side of the label in each direction.
           */}
-          <p className="border-teal-deep text-teal-deep border-s-2 ps-4 text-sm font-medium tracking-[0.02em]">
+          <p className="border-teal-deep text-teal-deep border-s-2 ps-4 text-[clamp(0.95rem,2.1vw,1.375rem)] font-medium tracking-[0.02em]">
             {t("eyebrow")}
           </p>
 
@@ -77,20 +82,27 @@ export async function Meaning() {
             One heading, split across two lines as in the comp. `block` spans
             rather than a `<br>`, so the break is a layout choice that collapses
             naturally when the column is narrow.
+
+            Sized to match the comp's own scale: there, each heading line's ink
+            runs about 7.2% of the canvas width tall, which is roughly 9-10vw of
+            font size once cap-height is accounted for. The `rem` ceiling keeps
+            it from ballooning further on very wide monitors than the section's
+            own max-width would suggest.
           */}
           <h2
             id="meaning-heading"
-            className="text-[clamp(1.75rem,4vw,2.875rem)] leading-[1.3] font-semibold tracking-[-0.01em] text-balance"
+            className="text-[clamp(2.25rem,8.6vw,5.25rem)] leading-[1.16] font-semibold tracking-[-0.01em] text-balance"
           >
             <span className="block">{t("headingLead")}</span>
             <span className="block">{t("headingRest")}</span>
           </h2>
 
           {/*
-            The comp's two numbered phrases. A real list, so the pairing is
-            conveyed structurally and not only by the markers.
+            The comp's two numbered phrases sit side by side, not stacked, so this
+            stays a row at every width the column supports. `flex-wrap` lets the
+            pair drop to two lines instead of overflowing on a narrow phone.
           */}
-          <ol className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-10 sm:gap-y-4 xl:flex-col xl:gap-4">
+          <ol className="flex flex-row flex-wrap items-baseline gap-x-10 gap-y-4">
             {[
               { marker: t("first.marker"), text: t("first.text") },
               { marker: t("second.marker"), text: t("second.text") },
@@ -100,10 +112,10 @@ export async function Meaning() {
                   Markers are numerals in the comp, set in the teal accent. They
                   label rather than decorate, so they stay in the accessible text.
                 */}
-                <span className="text-teal-deep text-lg font-semibold tabular-nums">
+                <span className="text-teal-deep text-[clamp(1.375rem,3vw,2rem)] font-semibold tabular-nums">
                   {item.marker}
                 </span>
-                <span className="text-[clamp(1rem,1.6vw,1.125rem)] font-medium">
+                <span className="text-[clamp(1.1875rem,2.6vw,1.75rem)] font-medium">
                   {item.text}
                 </span>
               </li>
@@ -113,10 +125,11 @@ export async function Meaning() {
           {/*
             Body copy. Not in the comp, which shows only the heading and the two
             phrases, but the spec asks this section to actually introduce both
-            meanings of the name. Kept to one restrained paragraph so the
-            composition stays typography-led.
+            meanings of the name. Sized up to match the new scale while staying
+            clearly secondary to the heading, so the composition stays
+            typography-led rather than becoming a wall of large type.
           */}
-          <p className="max-w-[46ch] text-[clamp(0.95rem,1.5vw,1.0625rem)] leading-relaxed opacity-80">
+          <p className="max-w-[46ch] text-[clamp(1.0625rem,1.9vw,1.3125rem)] leading-relaxed opacity-80">
             {t("lead")}
           </p>
         </div>
