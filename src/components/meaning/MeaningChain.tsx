@@ -54,7 +54,7 @@ export function MeaningChain({ alt }: { alt: string }) {
       Below `xl` the section is a normal stacked block, so plain width sizing is
       correct and the artwork is scaled back to stay a supporting motif.
     */
-    <RevealOnView className="relative w-[86%] max-w-[46rem] sm:w-[70%] xl:absolute xl:bottom-0 xl:left-0 xl:w-[min(85vw,120svh)] xl:max-w-none">
+    <RevealOnView className="relative mr-auto w-[78%] max-w-[40rem] sm:w-[62%] xl:absolute xl:bottom-0 xl:left-0 xl:mr-0 xl:w-[min(85vw,120svh)] xl:max-w-none">
       {/*
         `aspect-ratio` reserves the full box before the image loads, so nothing
         below it shifts. The reveal animates only `clip-path`, `opacity`, and
