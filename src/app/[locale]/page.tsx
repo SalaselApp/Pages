@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { Hero } from "@/components/hero/Hero";
+import { Meaning } from "@/components/meaning/Meaning";
 import { routing } from "@/i18n/routing";
 
 export function generateStaticParams() {
@@ -28,6 +29,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       </a>
       <main id="main" className="flex flex-1 flex-col">
         <Hero />
+        <Meaning />
       </main>
     </>
   );

@@ -24,5 +24,20 @@
       "title": "YouTube on your terms",
       "cta": "Add to Chrome"
     }
+  },
+  "meaning": {
+    "eyebrow": "Why Salasel?",
+    "headingLead": "Knowledge finds order,",
+    "headingRest": "intention becomes practice.",
+    "first": {
+      "marker": "01",
+      "text": "Series gather what serves you"
+    },
+    "second": {
+      "marker": "02",
+      "text": "Links hold your direction"
+    },
+    "lead": "The name holds both meanings: series that organise knowledge so you know where to begin, and chains that tie intention to practice so what you learn stays. That is what we build, for learning, awareness, and personal growth.",
+    "artworkAlt": "A chain of interlocking links, lit in green, entering from the edge of the page."
   }
 }
