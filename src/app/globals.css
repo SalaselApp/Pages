@@ -338,6 +338,27 @@ body {
   animation: salasel-reveal-ltr 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
+/*
+ * Scroll-triggered fade-up for Section 2's copy.
+ *
+ * Same motion as the hero's `.rise` (fade combined with a small upward
+ * settle), but gated on `RevealOnView`'s data attributes instead of playing
+ * immediately on load, since this copy starts below the fold. Direction is
+ * vertical only, so it needs no left/right handling for RTL vs LTR: the
+ * chain artwork already owns the horizontal reveal in this section, and a
+ * second element sliding in from the same physical side would compete with
+ * it rather than read as one composition.
+ */
+[data-reveal-ready="true"] .reveal-rise {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  will-change: opacity, transform;
+}
+
+[data-reveal-shown="true"] .reveal-rise {
+  animation: salasel-rise 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motif,
   .motif-end,
@@ -356,6 +377,15 @@ body {
   [data-reveal-shown="true"] .reveal-ltr {
     animation: none !important;
     clip-path: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  /* Same for the copy's fade-up: text is simply present, never withheld. */
+  [data-reveal-ready="true"] .reveal-rise,
+  [data-reveal-shown="true"] .reveal-rise {
+    animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     will-change: auto;
