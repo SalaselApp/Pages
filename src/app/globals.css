@@ -359,6 +359,334 @@ body {
   animation: salasel-rise 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
+/* ---------------------------------------------------------------------------
+ * Section 3 — Salasel app screenshot composition
+ *
+ * Three real screenshots layered in 3D with CSS, reproducing the approved
+ * prototype (`.design-reference/.../prototype-section-3`). The locked desktop
+ * values from the asset spec live in the `>=1024px` block below and must stay
+ * exact; tablet and mobile reduce the offsets and perspective rather than
+ * squeezing the desktop plane into a small viewport.
+ *
+ * Two transform layers are kept separate on purpose:
+ *
+ *   - `.app-screen` carries each layer's *final* resting transform (the locked
+ *     translate/scale/depth). Parallax adds to the deck's rotation only.
+ *   - `.app-screen-media` (the inner <img> wrapper) carries the one-shot
+ *     entrance: opacity plus a small rise out of depth. Animating the inner
+ *     element leaves every final outer transform byte-for-byte intact once the
+ *     entrance settles.
+ *
+ * The shell reserves its box with `aspect-ratio`, so nothing shifts as the
+ * screenshots decode. Only `transform` and `opacity` are ever animated.
+ * ------------------------------------------------------------------------- */
+
+.app-shell {
+  /* Direction-neutral: the 3D plane is positioned in physical coordinates in
+     both locales, exactly as the approved prototype does, so its lean never
+     flips between Arabic and English. Locale mirroring happens at the grid
+     level instead, which swaps the whole composition to the correct side. */
+  direction: ltr;
+  position: relative;
+  width: min(78vw, 34rem);
+  /* Reserves height before the images decode. Taller than wide so the deck's
+     downward-offset rear layer stays on the plane. */
+  aspect-ratio: 1 / 1.02;
+  margin-inline: auto;
+}
+
+.app-deck {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: 50% 45%;
+  /* Base (mobile): a gentle lean, no parallax. */
+  transform: rotateX(2deg) rotateY(6deg) rotateZ(1deg);
+}
+
+.app-screen {
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  width: 88%;
+  aspect-ratio: 1.62 / 1;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  border-radius: 16px;
+}
+
+/* Animated container: holds the frame, rim, and media so the whole thing —
+   border and shadow included — slides in as one piece during the entrance. */
+.app-screen-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  transform-style: preserve-3d;
+}
+
+/* The layer's simulated frame: a teal-edged plate sitting just behind the
+   screenshot, giving the stack its depth and thin border. */
+.app-screen-inner::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 6px -12px -13px 7px;
+  border: 1px solid rgb(79 193 168 / 38%);
+  border-radius: 17px;
+  background: linear-gradient(145deg, #173b36, #071b19);
+  box-shadow: 0 34px 74px rgb(0 0 0 / 46%);
+  transform: translateZ(-18px);
+}
+
+/* A restrained teal rim and a soft directional sheen over the screenshot. */
+.app-screen-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 1px solid rgb(87 200 175 / 50%);
+  border-radius: 16px;
+  background: linear-gradient(110deg, transparent 57%, rgb(70 210 178 / 6%));
+  pointer-events: none;
+}
+
+.app-screen-media {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 40px 86px rgb(0 0 0 / 42%);
+}
+
+.app-screen-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  backface-visibility: hidden;
+}
+
+/* Stacking order and per-layer sizing are constant across breakpoints; only
+   the offsets and opacity change responsively. */
+.app-screen-front {
+  z-index: 3;
+  width: 88%;
+}
+.app-screen-middle {
+  z-index: 2;
+  width: 84%;
+  opacity: 0.94;
+}
+.app-screen-rear {
+  z-index: 1;
+  width: 76%;
+  opacity: 0.84;
+}
+
+/* Non-destructive focal crops from the spec, applied via object-position so the
+   source files stay byte-identical. */
+.app-screen-middle .app-screen-media img {
+  object-position: 58% center;
+}
+.app-screen-rear .app-screen-media img {
+  object-position: 62% center;
+}
+
+/* Base (mobile): a simplified overlapping stack in percentages, so the offsets
+   scale with the deck and never force horizontal overflow. */
+.app-screen-front {
+  transform: translate3d(0, 0, 0);
+}
+.app-screen-middle {
+  transform: translate3d(-8%, 8%, -40px) scale(0.96);
+}
+.app-screen-rear {
+  transform: translate3d(-16%, 16%, -80px) scale(0.9);
+}
+
+/* Tablet: reduced offsets and a shallower lean than desktop. */
+@media (min-width: 768px) {
+  .app-shell {
+    width: min(70vw, 44rem);
+    aspect-ratio: 1.12 / 1;
+  }
+  .app-deck {
+    top: 8%;
+    left: 18%;
+    width: min(80%, 40rem);
+    inset: auto;
+    aspect-ratio: 1.62 / 1;
+    transform: rotateX(3deg) rotateY(12deg) rotateZ(1.2deg);
+  }
+  .app-screen {
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  .app-screen-front {
+    width: 92%;
+    transform: translate3d(0, 0, 0);
+  }
+  .app-screen-middle {
+    width: 86%;
+    transform: translate3d(-96px, 78px, -60px) scale(0.97);
+  }
+  .app-screen-rear {
+    width: 74%;
+    transform: translate3d(-158px, 142px, -120px) scale(0.92);
+    opacity: 0.82;
+  }
+}
+
+/* Desktop: the locked approved values. Do not alter these. */
+@media (min-width: 1024px) {
+  .app-shell {
+    width: min(66vw, 72rem);
+    aspect-ratio: 1.25 / 1;
+  }
+  .app-deck {
+    top: 8%;
+    left: 20%;
+    width: min(78%, 57.5rem);
+    transform: rotateX(calc(3deg + var(--app-rx, 0deg)))
+      rotateY(calc(18deg + var(--app-ry, 0deg))) rotateZ(1.6deg);
+    transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .app-screen-front {
+    transform: translate3d(0, 0, 0);
+  }
+  .app-screen-middle {
+    transform: translate3d(-145px, 110px, -70px) scale(0.97);
+    opacity: 0.94;
+  }
+  .app-screen-rear {
+    transform: translate3d(-240px, 205px, -140px) scale(0.92);
+    opacity: 0.82;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Section 3 — mobile slider
+ *
+ * Below `md` the leaning 3D stack is replaced with a horizontal scroll-snap
+ * carousel: one screenshot per view, swipeable, with dot indicators. Native
+ * scroll-snap does the paging, so it stays smooth and needs no JS for the swipe
+ * itself — the island only tracks the active dot and handles dot taps.
+ * ------------------------------------------------------------------------- */
+
+.app-slider-wrap {
+  width: 100%;
+}
+
+.app-slider {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Full-bleed edges feel better than a scrollbar gutter on a phone. */
+  scroll-padding-inline: 0;
+}
+
+.app-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.app-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+}
+
+.app-slide-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.62 / 1;
+  overflow: hidden;
+  border: 1px solid rgb(79 193 168 / 38%);
+  border-radius: 16px;
+  background: linear-gradient(145deg, #173b36, #071b19);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 44%);
+}
+
+.app-slide-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.app-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.app-dot {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(147 211 191 / 30%);
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    width 200ms ease;
+}
+
+/* Expands the tap target to 44x44 without enlarging the visible dot. */
+.app-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+.app-dot[data-active="true"] {
+  width: 24px;
+  background: var(--teal);
+}
+
+/* Entrance: every layer slides in from the physical left while fading, rear →
+   front so the lowest layer of the stack settles first and the front screen
+   lands last on top. Delays are set per layer inline so the sequence staggers
+   ~140ms and settles ~1.1s total. Physical `translateX` (not logical) because
+   the plane itself is pinned to `ltr` in both locales, so "from the left" reads
+   the same in Arabic and English. Kept identical across breakpoints, composing
+   with whichever final outer transform the current width applies. */
+@keyframes salasel-screen-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-72px, 0, -30px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Pre-reveal resting state, released only once the island has mounted; with no
+   JavaScript neither attribute is present, so the screenshots simply render. */
+[data-screens-ready="true"] .app-screen-inner {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+[data-screens-shown="true"] .app-screen-inner {
+  animation: salasel-screen-in 0.82s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motif,
   .motif-end,
@@ -389,6 +717,20 @@ body {
     opacity: 1 !important;
     transform: none !important;
     will-change: auto;
+  }
+
+  /* Section 3 screenshots appear immediately in their final position: no
+     entrance, no delayed visibility, no pointer parallax. */
+  [data-screens-ready="true"] .app-screen-inner,
+  [data-screens-shown="true"] .app-screen-inner {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .app-deck {
+    transition: none !important;
   }
 
   /* The travelling lights carry no information, so they simply go away. */

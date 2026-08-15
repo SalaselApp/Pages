@@ -39,5 +39,23 @@
     },
     "lead": "The name holds both meanings: series that organise knowledge so you know where to begin, and chains that tie intention to practice so what you learn stays. That is what we build, for learning, awareness, and personal growth.",
     "artworkAlt": "A chain of interlocking links, lit in green, entering from the edge of the page."
+  },
+  "app": {
+    "eyebrow": "Salasel App",
+    "headingLead": "A home for",
+    "headingAccent": "deliberate learning.",
+    "lead": "A place to return to instead of an endless feed: discover, focus, and keep your place.",
+    "points": {
+      "discover": "Discover curated series across education, awareness, and personal growth.",
+      "focus": "Watch in a focused environment and track your progress.",
+      "keep": "Bookmark what serves you and keep your own notes.",
+      "return": "And always return to a clear learning path."
+    },
+    "cta": "Begin with a series",
+    "screens": {
+      "home": "The Salasel app home screen showing a library of curated learning series.",
+      "series": "A series detail page listing the episodes within it.",
+      "player": "A focused player with a side notes panel."
+    }
   }
 }

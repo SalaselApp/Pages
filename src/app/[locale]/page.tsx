@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
+import { SalaselApp } from "@/components/app/SalaselApp";
 import { Hero } from "@/components/hero/Hero";
 import { Meaning } from "@/components/meaning/Meaning";
 import { routing } from "@/i18n/routing";
@@ -30,6 +31,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <main id="main" className="flex flex-1 flex-col">
         <Hero />
         <Meaning />
+        <SalaselApp />
       </main>
     </>
   );

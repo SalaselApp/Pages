@@ -35,6 +35,12 @@ import { useEffect, useRef, type ReactNode } from "react";
 export function RevealOnView({
   children,
   className = "",
+  /**
+   * Optional writing direction for the wrapper. Used when the element sits
+   * inside a container whose direction has been pinned (e.g. a physically
+   * ordered grid) and its own text needs to read in the locale's direction.
+   */
+  dir,
   /** How much of the element must be visible before revealing. */
   threshold = 0.2,
   /** Starts the reveal slightly before the element's top edge appears. */
@@ -42,6 +48,7 @@ export function RevealOnView({
 }: {
   children: ReactNode;
   className?: string;
+  dir?: "rtl" | "ltr";
   threshold?: number;
   rootMargin?: string;
 }) {
@@ -80,7 +87,7 @@ export function RevealOnView({
   }, [threshold, rootMargin]);
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={className} dir={dir}>
       {children}
     </div>
   );
