@@ -1,6 +1,7 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { MeaningChain } from "@/components/meaning/MeaningChain";
 import { RevealOnView } from "@/components/RevealOnView";
+import { localeDirection, type AppLocale } from "@/i18n/routing";
 
 /**
  * Section 2 — What Salasel means.
@@ -30,6 +31,7 @@ import { RevealOnView } from "@/components/RevealOnView";
  */
 export async function Meaning() {
   const t = await getTranslations("meaning");
+  const locale = (await getLocale()) as AppLocale;
 
   return (
     <section
@@ -39,19 +41,25 @@ export async function Meaning() {
         contains the chain's bleed. The paper field is opaque, so it also ends the
         hero's dark canvas cleanly.
 
-        `min-h-svh` at `xl` makes the desktop composition one screen, as in the
-        comp, rather than a width-derived height that overflows the viewport and
-        pushes the chain below the fold. Below `xl` the section is a normal block
-        whose height follows its content: a short viewport there should scroll,
-        not compress.
+        `min-h-[124svh]` at `xl` makes the desktop composition a little taller
+        than one screen, so it never frames up as an exact full-viewport block
+        while scrolling — you land slightly above or below it naturally — while
+        still giving the chain room to sit on the fold. Below `xl` the section
+        is a normal block whose height follows its content: a short viewport
+        there should scroll, not compress.
       */
-      className="bg-paper text-ink relative isolate flex w-full flex-col overflow-hidden xl:min-h-svh"
+      className="bg-paper text-ink relative isolate flex w-full flex-col overflow-hidden xl:min-h-[108svh]"
     >
       {/*
-        Copy column. `ml-auto` rather than the logical `ms-auto`: the chain is
-        pinned to the physical left edge in both locales, so the copy sits on the
-        physical right in both. Text alignment inside still follows writing
-        direction, since it is left to the default.
+        Copy column, pinned to the inline-start (leading) edge with `me-auto`,
+        so it sits on the physical left in English LTR and the physical right in
+        Arabic RTL. The chain takes the opposite, trailing edge in each locale.
+
+        This logical mirroring is what keeps the copy clear of the artwork: text
+        always aligns to its own reading edge, which is the outer edge of this
+        column, while the chain bleeds in from the opposite side. Pinning the
+        chain to the physical left in both locales (as before) left English's
+        left-aligned copy sitting directly on top of it.
 
         Below `xl` the artwork follows in normal flow, so the container only needs
         a gap beneath the copy; the section's own padding handles the rest.
@@ -59,7 +67,7 @@ export async function Meaning() {
         Vertical padding is `vh`-proportional at `xl` so the copy block breathes on
         a tall screen and tightens on a short one instead of overflowing it.
       */}
-      <div className="relative z-10 mx-auto w-full max-w-[86rem] px-6 pt-20 pb-12 sm:px-10 sm:pt-24 xl:ml-auto xl:pt-[12vh] xl:pb-[6vh]">
+      <div className="relative z-10 mx-auto w-full max-w-[86rem] px-6 pt-20 pb-12 sm:px-10 sm:pt-24 xl:me-auto xl:pt-[26vh] xl:pb-[6vh]">
         {/*
           Column width is capped well clear of the artwork's own right edge
           (`min(60vw, ...)` in `MeaningChain`), so it holds at every desktop size
@@ -69,7 +77,7 @@ export async function Meaning() {
           narrower desktop width can't hold them on one — simply grows the
           section rather than running under the chain.
         */}
-        <RevealOnView className="flex flex-col gap-6 xl:ml-auto xl:w-[50%]">
+        <RevealOnView className="flex flex-col gap-6 xl:me-auto xl:w-[50%]">
           {/*
             Eyebrow with the comp's thin vertical rule. The rule is decorative, so
             it is a border on the text itself rather than an element a screen
@@ -152,7 +160,7 @@ export async function Meaning() {
         </RevealOnView>
       </div>
 
-      <MeaningChain alt={t("artworkAlt")} />
+      <MeaningChain alt={t("artworkAlt")} dir={localeDirection[locale]} />
     </section>
   );
 }

@@ -18,13 +18,14 @@ import { localeDirection, type AppLocale } from "@/i18n/routing";
  * server-rendered; the only client code is `AppScreens`, which adds the
  * viewport entrance and desktop pointer parallax.
  *
- * Placement is physical, not logical, matching the approved comp and prototype
- * in both locales: the leaning screenshot plane always sits on the left and the
- * copy on the right. Left to the locale's own direction the grid would flip in
- * Arabic RTL and put the screenshots on the right, which reverses the composition.
- * So the grid container is forced to `ltr` and the copy column restores its own
- * `dir` internally, so the text still reads and aligns correctly per language.
- * The screenshot plane's own lean is already physical inside `AppScreens`.
+ * Placement is logical, mirroring the approved comp per locale: the copy takes
+ * the leading column and the leaning screenshot plane the trailing one — copy
+ * right / screenshots left in Arabic RTL (as in the comp), mirrored to copy
+ * left / screenshots right in English LTR. The grid follows the locale's own
+ * direction so the copy always aligns to its outer reading edge, clear of the
+ * screenshot plane, which bleeds toward the section's centre. `AppScreens`
+ * mirrors the plane's lean per locale so it always fans toward the outer edge,
+ * away from the copy.
  */
 export async function SalaselApp() {
   const t = await getTranslations("app");
@@ -49,31 +50,30 @@ export async function SalaselApp() {
       />
 
       {/*
-        Forced physical `ltr` so the two columns keep the comp's order in both
-        locales: screenshots left, copy right. Order utilities then place the
-        screenshots first visually on desktop while the copy stays first in the
-        stacked mobile flow (heading before artwork).
-      */}
-      <div className="mx-auto grid w-full max-w-[86rem] grid-cols-1 items-center gap-10 px-6 py-20 [direction:ltr] sm:px-10 sm:py-24 lg:grid-cols-[1.35fr_1fr] lg:gap-6 lg:py-28">
-        {/* Screenshot composition holds the left column on large screens. */}
-        <div className="order-2 min-w-0 lg:order-1">
-          <AppScreens
-            homeAlt={t("screens.home")}
-            seriesAlt={t("screens.series")}
-            playerAlt={t("screens.player")}
-          />
-        </div>
+        Logical placement: the grid follows the locale's own direction, so the
+        copy always takes the leading column and the screenshots the trailing
+        one — copy right / screenshots left in Arabic RTL (matching the comp),
+        and mirrored to copy left / screenshots right in English LTR.
 
+        This is what keeps the copy clear of the screenshot plane at every
+        width: text always aligns to its reading edge, which is the outer edge
+        of its own column, while the screenshot deck bleeds toward the section's
+        centre — into the copy column's *empty* inner region, never over the
+        text. Pinning both sides physically (as before) put English's
+        left-aligned copy directly under the left-bleeding deck.
+
+        The copy is the first grid item, so it also stays first in the stacked
+        mobile flow (heading before artwork).
+      */}
+      <div className="mx-auto grid w-full max-w-[86rem] grid-cols-1 items-center gap-10 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-[1fr_1.35fr] lg:gap-6 lg:py-28">
         {/*
-          Copy column, right on desktop, first in the stacked mobile flow.
-          `dir` is restored to the locale here so the text reads and aligns
-          correctly even though the grid itself is pinned to `ltr`.
+          Copy column: leading column on large screens, first in the stacked
+          mobile flow. Text reads and aligns per the inherited locale direction.
         */}
         <RevealOnView
-          dir={localeDirection[locale]}
           /* Nudged up on desktop so the copy sits above dead-centre rather than
              low in the tall full-height section. */
-          className="order-1 flex flex-col gap-6 lg:order-2 lg:-translate-y-10"
+          className="order-1 flex flex-col gap-6 lg:-translate-y-10"
         >
           <p className="reveal-rise text-teal-brand inline-flex items-center gap-2.5 text-sm font-medium tracking-[0.02em]">
             <Image
@@ -157,6 +157,21 @@ export async function SalaselApp() {
             </a>
           </div>
         </RevealOnView>
+
+        {/*
+          Screenshot composition: trailing column on large screens, second in
+          the stacked mobile flow. `AppScreens` keeps its own internal `ltr`
+          plane; its lean is mirrored per locale so the stack always fans toward
+          the section's outer edge, away from the copy, in both directions.
+        */}
+        <div className="order-2 min-w-0">
+          <AppScreens
+            homeAlt={t("screens.home")}
+            seriesAlt={t("screens.series")}
+            playerAlt={t("screens.player")}
+            dir={localeDirection[locale]}
+          />
+        </div>
       </div>
     </section>
   );

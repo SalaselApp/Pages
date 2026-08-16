@@ -12,11 +12,12 @@ import { RevealOnView } from "@/components/RevealOnView";
  * oversized, offset image. The file itself is untouched — no regeneration, no
  * destructive crop, no mirroring.
  *
- * Placement is physical (`left`), not logical, in both locales. The chain is
- * drawn bleeding off the left edge, so mirroring it for English would mean
- * flipping the supplied artwork, and it would also put the reveal's specified
- * left-to-right direction at odds with the composition. The copy column moves to
- * the opposite side instead.
+ * Placement is logical: the chain is pinned to the inline-end (trailing) edge,
+ * landing on the physical left in Arabic RTL — as in the approved comp — and on
+ * the physical right in English LTR. For LTR the artwork is mirrored so it still
+ * bleeds off that trailing edge; the links are abstract and decorative, so the
+ * flip changes nothing readable and the supplied file stays untouched. The copy
+ * column always takes the opposite, leading edge.
  */
 
 /** The master's own pixel dimensions. */
@@ -28,7 +29,21 @@ const ASSET = { width: 1672, height: 941 } as const;
  */
 const ART = { left: 0, top: 265, width: 1007, height: 676 } as const;
 
-export function MeaningChain({ alt }: { alt: string }) {
+export function MeaningChain({
+  alt,
+  dir = "rtl",
+}: {
+  alt: string;
+  /**
+   * Locale direction. The chain is pinned to the inline-end (trailing) edge in
+   * both locales, so it lands on the physical left in Arabic RTL — matching the
+   * approved comp — and mirrors to the physical right in English LTR. For LTR
+   * the artwork is flipped horizontally so it still bleeds off that trailing
+   * edge; the flip is a non-destructive render transform on abstract decorative
+   * links, and the supplied file is untouched.
+   */
+  dir?: "ltr" | "rtl";
+}) {
   return (
     /*
       The observed element is this outer box; the clipped one is the frame
@@ -54,7 +69,16 @@ export function MeaningChain({ alt }: { alt: string }) {
       Below `xl` the section is a normal stacked block, so plain width sizing is
       correct and the artwork is scaled back to stay a supporting motif.
     */
-    <RevealOnView className="relative mr-auto w-[78%] max-w-[40rem] sm:w-[62%] xl:absolute xl:bottom-0 xl:left-0 xl:mr-0 xl:w-[min(85vw,120svh)] xl:max-w-none">
+    <RevealOnView
+      className={`relative me-auto w-[78%] max-w-[40rem] sm:w-[62%] xl:absolute xl:bottom-0 xl:end-0 xl:me-0 xl:w-[min(128vw,182svh)] xl:max-w-none${
+        /* English LTR: mirror the whole positioning box so the chain bleeds off
+           its trailing (physical-right) edge, the same distance from that edge
+           as it sits from the left in Arabic. The flip lives here, on the outer
+           box, rather than on the frame below, whose `transform` the reveal
+           animation owns and would overwrite. */
+        dir === "ltr" ? " [transform:scaleX(-1)]" : ""
+      }`}
+    >
       {/*
         `aspect-ratio` reserves the full box before the image loads, so nothing
         below it shifts. The reveal animates only `clip-path`, `opacity`, and

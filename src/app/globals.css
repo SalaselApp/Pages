@@ -513,8 +513,8 @@ body {
   }
   .app-deck {
     top: 8%;
-    left: 18%;
-    width: min(80%, 40rem);
+    left: 40%;
+    width: min(68%, 34rem);
     inset: auto;
     aspect-ratio: 1.62 / 1;
     transform: rotateX(3deg) rotateY(12deg) rotateZ(1.2deg);
@@ -547,8 +547,8 @@ body {
   }
   .app-deck {
     top: 8%;
-    left: 20%;
-    width: min(78%, 57.5rem);
+    left: 42%;
+    width: min(66%, 48rem);
     transform: rotateX(calc(3deg + var(--app-rx, 0deg)))
       rotateY(calc(18deg + var(--app-ry, 0deg))) rotateZ(1.6deg);
     transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -564,6 +564,40 @@ body {
     transform: translate3d(-240px, 205px, -140px) scale(0.92);
     opacity: 0.82;
   }
+}
+
+/* English LTR: an exact mirror of the approved Arabic composition. The whole
+   deck is reflected with `scaleX(-1)` rather than by hand-negating each layer's
+   offset and rotation — hand-mirroring around the deck's off-centre origin left
+   the two locales with visibly different fan spreads and lean angles. A single
+   reflection guarantees the English stack is a true mirror image: identical
+   spread, identical angles, just flipped and leaning toward the outer-right
+   edge, away from the copy.
+
+   Only the screenshot pixels are counter-flipped, so the real app UI still
+   reads left-to-right and is never shown mirrored. The layer offsets, frame,
+   shadows, and crops all inherit the locked Arabic values and reflect with the
+   deck; nothing here is re-tuned. The deck is anchored to the right by the same
+   amount Arabic anchors it from the left. */
+[data-app-dir="ltr"] .app-deck {
+  left: auto;
+  right: 42%;
+}
+@media (min-width: 768px) {
+  [data-app-dir="ltr"] .app-deck {
+    right: 40%;
+    transform: scaleX(-1) rotateX(3deg) rotateY(12deg) rotateZ(1.2deg);
+  }
+}
+@media (min-width: 1024px) {
+  [data-app-dir="ltr"] .app-deck {
+    right: 42%;
+    transform: scaleX(-1) rotateX(calc(3deg + var(--app-rx, 0deg)))
+      rotateY(calc(18deg + var(--app-ry, 0deg))) rotateZ(1.6deg);
+  }
+}
+[data-app-dir="ltr"] .app-screen-media img {
+  transform: scaleX(-1);
 }
 
 /* ---------------------------------------------------------------------------

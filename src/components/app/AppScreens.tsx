@@ -37,10 +37,18 @@ export function AppScreens({
   homeAlt,
   seriesAlt,
   playerAlt,
+  dir = "rtl",
 }: {
   homeAlt: string;
   seriesAlt: string;
   playerAlt: string;
+  /**
+   * Locale direction. Drives which way the 3D stack leans: the whole plane is
+   * mirrored for `ltr` so it always fans toward the section's outer edge, away
+   * from the copy column, in both locales. Only the geometry mirrors — each
+   * screenshot image itself is never flipped, so the real UI stays readable.
+   */
+  dir?: "ltr" | "rtl";
 }) {
   const shellRef = useRef<HTMLDivElement>(null);
   const deckRef = useRef<HTMLDivElement>(null);
@@ -220,6 +228,7 @@ export function AppScreens({
       {/* Desktop / tablet: the approved layered 3D stack. */}
       <div
         ref={shellRef}
+        data-app-dir={dir}
         className="app-shell hidden md:block"
         aria-label="Three real Salasel app screenshots layered in perspective"
       >
