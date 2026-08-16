@@ -70,7 +70,7 @@ export function MeaningChain({
       correct and the artwork is scaled back to stay a supporting motif.
     */
     <RevealOnView
-      className={`relative me-auto w-[78%] max-w-[40rem] sm:w-[62%] xl:absolute xl:bottom-0 xl:end-0 xl:me-0 xl:w-[min(128vw,182svh)] xl:max-w-none${
+      className={`relative me-auto w-full sm:w-[62%] sm:max-w-[40rem] xl:absolute xl:bottom-0 xl:end-0 xl:me-0 xl:w-[min(128vw,182svh)] xl:max-w-none${
         /* English LTR: mirror the whole positioning box so the chain bleeds off
            its trailing (physical-right) edge, the same distance from that edge
            as it sits from the left in Arabic. The flip lives here, on the outer
