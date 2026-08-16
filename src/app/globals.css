@@ -721,6 +721,86 @@ body {
   animation: salasel-screen-in 0.82s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+/* ---------------------------------------------------------------------------
+ * Section 4 — Chrome extension screenshot
+ *
+ * One real screenshot on a framed plate, leaning in perspective toward the
+ * section's outer edge. Same construction language as Section 3 but a single
+ * layer: the plate carries the resting lean (plus parallax), the media wrapper
+ * carries the one-shot entrance, so the final transform stays intact once the
+ * entrance settles. The shell reserves its box with `aspect-ratio`, so nothing
+ * shifts as the image decodes. Only `transform` and `opacity` animate.
+ * ------------------------------------------------------------------------- */
+
+.ext-shell {
+  position: relative;
+  width: min(90vw, 42rem);
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .ext-shell {
+    width: min(78vw, 50rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ext-shell {
+    width: min(48vw, 56rem);
+  }
+}
+
+/* A plain, flat framed screenshot: a thin teal border, rounded corners, and a
+   quiet shadow. No 3D lean or parallax — just a regular screenshot. */
+.ext-frame {
+  position: relative;
+  margin: 0;
+  /* Matches the source screenshot's own 1620x960 ratio, so the frame holds the
+     image without letterboxing and reserves its box before decode. */
+  aspect-ratio: 1620 / 960;
+  border: 1px solid rgb(79 193 168 / 30%);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgb(0 0 0 / 42%);
+}
+
+.ext-media {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.ext-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+/* Entrance: a simple fade and rise, released only once the island mounts; with
+   no JavaScript neither attribute is present, so the screenshot renders. */
+@keyframes salasel-ext-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+[data-ext-ready="true"] .ext-frame {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+[data-ext-shown="true"] .ext-frame {
+  animation: salasel-ext-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motif,
   .motif-end,
@@ -757,6 +837,15 @@ body {
      entrance, no delayed visibility, no pointer parallax. */
   [data-screens-ready="true"] .app-screen-inner,
   [data-screens-shown="true"] .app-screen-inner {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  /* Section 4 screenshot: present immediately, no entrance. */
+  [data-ext-ready="true"] .ext-frame,
+  [data-ext-shown="true"] .ext-frame {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;

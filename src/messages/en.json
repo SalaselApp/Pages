@@ -57,5 +57,28 @@
       "series": "A series detail page listing the episodes within it.",
       "player": "A focused player with a side notes panel."
     }
+  },
+  "extension": {
+    "eyebrow": "Chrome Extension",
+    "headingLead": "YouTube on",
+    "headingAccent": "your terms.",
+    "lead": "Keep watching on YouTube. The extension hides only what you choose, holds your notes, and keeps a way back to your series.",
+    "togglesLabel": "Hide what pulls you away",
+    "toggles": {
+      "recommendations": "Recommendations",
+      "autoplay": "Autoplay",
+      "endCards": "End-screen cards",
+      "shorts": "Shorts",
+      "comments": "Comments",
+      "feed": "Homepage feed"
+    },
+    "points": {
+      "choose": "Turn off distractions one by one. Nothing is hidden until you switch it on.",
+      "notes": "Keep your own notes on each video.",
+      "resume": "See a card that brings you back to your Salasel series."
+    },
+    "note": "The extension is optional. You do not need it to use Salasel or YouTube.",
+    "cta": "Add to Chrome",
+    "screenAlt": "The Salasel extension open on a YouTube video, with distraction toggles and a notes panel."
   }
 }

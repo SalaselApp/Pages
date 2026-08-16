@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { SalaselApp } from "@/components/app/SalaselApp";
+import { ChromeExtension } from "@/components/extension/ChromeExtension";
 import { Hero } from "@/components/hero/Hero";
 import { Meaning } from "@/components/meaning/Meaning";
 import { routing } from "@/i18n/routing";
@@ -32,6 +33,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         <Hero />
         <Meaning />
         <SalaselApp />
+        <ChromeExtension />
       </main>
     </>
   );
