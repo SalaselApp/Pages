@@ -801,6 +801,68 @@ body {
   animation: salasel-ext-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+/* ---------------------------------------------------------------------------
+ * Section 5 — connecting chain
+ *
+ * The interlocked-chain master reveals with a left-to-right clip-wipe, reading
+ * as the chain drawing itself across the three steps in the reading direction.
+ * Only `clip-path`, `opacity`, and `transform` animate, so the reserved box
+ * never changes size. The wipe is physical (fixed left edge, right cut sweeping
+ * out); `LearningFlow` mirrors the whole box with `scaleX(-1)` in LTR so it
+ * always runs from the reading-start edge in both locales.
+ *
+ * As in Section 2, the observed element is the outer box and the clipped one is
+ * the frame inside: clipping the observed node itself would zero its
+ * intersection area and the observer would never fire. Both flags are absent
+ * with no JavaScript, so the chain simply renders.
+ * ------------------------------------------------------------------------- */
+
+.flow-chain {
+  position: relative;
+  width: 100%;
+}
+
+.flow-chain-frame {
+  position: relative;
+  width: 100%;
+  /* `aspect-ratio` is set inline in `FlowChain` to the cropped content band
+     (the master's transparent top is clipped), which also reserves the box
+     before decode. `overflow-hidden` clips the image lifted above the frame. */
+  overflow: hidden;
+}
+
+.flow-chain-frame img {
+  /* Absolutely placed and pulled up (inline `top`/`height` in `FlowChain`) so
+     the transparent top band sits above the frame and gets clipped, lifting the
+     chain higher. Width tracks the frame. */
+  position: absolute;
+  inset-inline-start: 0;
+  display: block;
+  width: 100%;
+  object-fit: contain;
+}
+
+@keyframes salasel-flow-draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+[data-flow-ready="true"] .flow-chain-frame {
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+  will-change: clip-path, opacity;
+}
+
+[data-flow-shown="true"] .flow-chain-frame {
+  animation: salasel-flow-draw 1.25s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motif,
   .motif-end,
@@ -849,6 +911,15 @@ body {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+    will-change: auto;
+  }
+
+  /* Section 5 chain: shown immediately, no wipe, no delayed visibility. */
+  [data-flow-ready="true"] .flow-chain-frame,
+  [data-flow-shown="true"] .flow-chain-frame {
+    animation: none !important;
+    clip-path: none !important;
+    opacity: 1 !important;
     will-change: auto;
   }
 
