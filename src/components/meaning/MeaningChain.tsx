@@ -62,6 +62,10 @@ export function MeaningChain({
                 clear of the copy on a short screen, where the copy takes a much
                 greater share of the viewport than it does in the comp.
 
+      Both caps are scaled up from the comp's own proportions to give the chain
+      a larger, more present footprint at the edge while keeping the same
+      bottom-anchored bleed and the same clearance logic.
+
       Taking the `min()` means a tall screen is limited by width and a short, wide
       one by height, so the chain always sits fully on screen and always clear of
       the text. Height then follows from the frame's own aspect ratio.
@@ -70,7 +74,7 @@ export function MeaningChain({
       correct and the artwork is scaled back to stay a supporting motif.
     */
     <RevealOnView
-      className={`relative me-auto w-full sm:w-[62%] sm:max-w-[40rem] xl:absolute xl:bottom-0 xl:end-0 xl:me-0 xl:w-[min(128vw,182svh)] xl:max-w-none${
+      className={`relative me-auto w-full sm:w-[72%] sm:max-w-[46rem] xl:absolute xl:bottom-0 xl:end-0 xl:me-0 xl:w-[min(150vw,215svh)] xl:max-w-none${
         /* English LTR: mirror the whole positioning box so the chain bleeds off
            its trailing (physical-right) edge, the same distance from that edge
            as it sits from the left in Arabic. The flip lives here, on the outer
