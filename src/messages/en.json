@@ -80,5 +80,38 @@
     "note": "The extension is optional. You do not need it to use Salasel or YouTube.",
     "cta": "Add to Chrome",
     "screenAlt": "The Salasel extension open on a YouTube video, with distraction toggles and a notes panel."
+  },
+  "flow": {
+    "eyebrow": "One learning flow",
+    "headingLead": "Two products,",
+    "headingAccent": "one continuous path.",
+    "keyline": "Learn where you prefer. Stay connected to what matters.",
+    "steps": {
+      "choose": {
+        "marker": "01",
+        "title": "Choose",
+        "text": "Pick a meaningful series in Salasel and set your direction."
+      },
+      "watch": {
+        "marker": "02",
+        "title": "Watch",
+        "text": "Follow it inside Salasel, or continue the same series on YouTube."
+      },
+      "stay": {
+        "marker": "03",
+        "title": "Stay on track",
+        "text": "On YouTube, the extension quiets the distractions you choose and keeps a way back to your series."
+      }
+    },
+    "shots": {
+      "choose": "A Salasel series page listing its episodes with progress checkboxes.",
+      "stay": "The Salasel extension open on YouTube, tracking your series progress with a button back to Salasel."
+    },
+    "watchChoice": {
+      "label": "Watch inside Salasel or continue the same series on YouTube",
+      "inApp": "In Salasel",
+      "onYouTube": "On YouTube"
+    },
+    "chainAlt": "A chain of interlocking links, lit in green, connecting each step of the flow."
   }
 }
