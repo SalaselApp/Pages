@@ -349,6 +349,33 @@ body {
  * second element sliding in from the same physical side would compete with
  * it rather than read as one composition.
  */
+/* Section 5 flow cards: instead of the vertical fade-up, these slide in along
+   the inline axis from the reading-start edge, matching the chain's
+   start-to-end clip-wipe so cards and chain read as entering from the same
+   direction. `--flow-card-from` carries the per-locale sign (positive = from
+   the physical right in RTL, negative = from the physical left in LTR), set on
+   the list in `LearningFlow`. */
+@keyframes salasel-flow-card-in {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--flow-card-from, 40px), 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+[data-reveal-ready="true"] .flow-card-rise {
+  opacity: 0;
+  transform: translate3d(var(--flow-card-from, 40px), 0, 0);
+  will-change: transform, opacity;
+}
+
+[data-reveal-shown="true"] .flow-card-rise {
+  animation: salasel-flow-card-in 1.25s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
 [data-reveal-ready="true"] .reveal-rise {
   opacity: 0;
   transform: translate3d(0, 16px, 0);
@@ -888,7 +915,9 @@ body {
 
   /* Same for the copy's fade-up: text is simply present, never withheld. */
   [data-reveal-ready="true"] .reveal-rise,
-  [data-reveal-shown="true"] .reveal-rise {
+  [data-reveal-shown="true"] .reveal-rise,
+  [data-reveal-ready="true"] .flow-card-rise,
+  [data-reveal-shown="true"] .flow-card-rise {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;

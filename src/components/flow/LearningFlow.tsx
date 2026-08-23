@@ -167,7 +167,7 @@ export async function LearningFlow() {
           purely decorative. On mobile the cards stack, so the chain becomes a
           quiet full-width backdrop rather than a between-cards connector.
         */}
-        <div className="pointer-events-none absolute -inset-x-[6%] bottom-0 z-0">
+        <div className="pointer-events-none absolute -inset-x-[6%] bottom-[8%] z-0">
           <FlowChain alt={t("chainAlt")} dir={dir} />
         </div>
 
@@ -184,11 +184,22 @@ export async function LearningFlow() {
           <RevealOnView>
             {/* Wider gaps than the default so more of the chain shows through
                 between the cards, reinforcing the connected-path read. */}
-            <ol className="flex flex-col gap-8 sm:flex-row sm:items-end sm:gap-10 lg:gap-14">
+            <ol
+              className="flex flex-col gap-8 sm:flex-row sm:items-end sm:gap-10 lg:gap-14"
+              style={
+                {
+                  // The chain draws from the reading-start edge; the cards slide
+                  // in from that same physical side so both read as entering
+                  // from one direction. RTL: from the physical left; LTR: from
+                  // the physical right (the chain box is mirrored in LTR).
+                  "--flow-card-from": dir === "rtl" ? "-2.5rem" : "2.5rem",
+                } as React.CSSProperties
+              }
+            >
               {steps.map((step, index) => (
                 <li
                   key={step}
-                  className="reveal-rise flex flex-1"
+                  className="flow-card-rise flex flex-1"
                   style={{
                     animationDelay: `${0.12 + index * 0.12}s`,
                     // Creative stagger: the middle card sits lower, the outer two
@@ -202,19 +213,24 @@ export async function LearningFlow() {
                   }}
                 >
                   {/*
-                    Solid card. `bg-panel` with a strong shadow and hairline
-                    border, opaque (not translucent) so the chain never bleeds
-                    through the copy. A very light backdrop blur only softens the
-                    chain right at the card edge. `w-full` + `flex-1` makes the
-                    three cards share the row; the middle card gets extra width so
-                    its two watch chips sit comfortably.
+                    Frosted card. `bg-panel/72` lets the lit chain read faintly
+                    through the panel, and `backdrop-blur-xl` frosts whatever
+                    passes behind so the links stay a soft presence rather than a
+                    sharp distraction competing with the copy. A hairline border
+                    and strong shadow keep the card edge defined against the busy
+                    chain. `w-full` + `flex-1` makes the three cards share the
+                    row; the middle card gets extra width so its two watch chips
+                    sit comfortably.
                   */}
                   <div
-                    className="border-hairline-strong bg-panel flex w-full flex-col gap-4 rounded-3xl border p-6 shadow-[0_28px_70px_rgba(0,0,0,0.55)] sm:p-7 sm:[transform:translateY(calc(-1*var(--flow-offset)))]"
+                    className="border-hairline-strong bg-panel/72 flex w-full flex-col gap-4 rounded-3xl border p-6 shadow-[0_28px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl sm:p-7 sm:[transform:translateY(calc(-1*var(--flow-offset)))]"
                   >
-                    {/* Number on top, then the title beneath it. The marker
-                        labels the step, so it stays in the accessible text. */}
-                    <div className="flex flex-col gap-1">
+                    {/* Number and title on one row, sharing a baseline. The
+                        marker keeps its teal accent and the title its cream, so
+                        only the layout changes, not the colour language. The
+                        marker labels the step, so it stays in the accessible
+                        text. */}
+                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                       <span className="text-teal-brand text-[clamp(1.5rem,2.6vw,2.25rem)] font-semibold tabular-nums">
                         {t(`steps.${step}.marker`)}
                       </span>
