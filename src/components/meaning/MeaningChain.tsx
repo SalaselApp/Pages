@@ -4,13 +4,15 @@ import { RevealOnView } from "@/components/RevealOnView";
 /**
  * Section 2's chain artwork.
  *
- * The supplied master (`04-section-2-left-chain.png`) is a full 1672x941 canvas
- * whose chain occupies only the lower-left corner and runs off both the left and
- * bottom edges. Rendering the whole canvas would waste most of the box on empty
- * transparency, so the visible window is cropped down to the content box with
- * CSS: an `overflow-hidden` frame at the content's aspect ratio holding an
- * oversized, offset image. The file itself is untouched — no regeneration, no
- * destructive crop, no mirroring.
+ * The supplied master (`04-section-2-rising-chain.png`) is a 900x858 canvas
+ * holding a tall, portrait chain that rises diagonally — dense at the bottom,
+ * thinning as it climbs toward the top. The chain fills the canvas vertically
+ * (it reaches the bottom edge and sits a few pixels below the top) while leaving
+ * roughly symmetric transparent margins on the left and right. Rendering the
+ * whole canvas would pad the box with that empty transparency, so the visible
+ * window is cropped to the content box with CSS: an `overflow-hidden` frame at
+ * the content's aspect ratio holding an oversized, offset image. The file itself
+ * is untouched — no regeneration, no destructive crop, no mirroring.
  *
  * Placement is logical: the chain is pinned to the inline-end (trailing) edge,
  * landing on the physical left in Arabic RTL — as in the approved comp — and on
@@ -21,13 +23,13 @@ import { RevealOnView } from "@/components/RevealOnView";
  */
 
 /** The master's own pixel dimensions. */
-const ASSET = { width: 1672, height: 941 } as const;
+const ASSET = { width: 900, height: 858 } as const;
 /**
  * Bounding box of the actual chain within that canvas, measured from the alpha
- * channel. It reaches the left and bottom edges, which is why the artwork reads
- * as entering from off-page.
+ * channel. It reaches the bottom edge and sits just below the top, which is why
+ * the artwork reads as rising in from off-page top and bottom.
  */
-const ART = { left: 0, top: 265, width: 1007, height: 676 } as const;
+const ART = { left: 139, top: 28, width: 622, height: 830 } as const;
 
 export function MeaningChain({
   alt,
@@ -50,31 +52,31 @@ export function MeaningChain({
       inside. They have to be separate elements, because a `clip-path` that
       hides an element also hides it from intersection geometry, and the
       observer would then never fire.
-    */
-    /*
-      Desktop size is whichever of two limits binds first:
 
-        60vw  — the comp's proportion (chain box = 0.602 of canvas width). Past
-                this the artwork grows into the copy column.
-        95svh — the same box measured against height. The comp's 0.72-of-height
-                would be ~107svh, but the artwork is bottom-anchored, so a larger
-                box also pushes its top edge higher; capping it keeps that edge
-                clear of the copy on a short screen, where the copy takes a much
-                greater share of the viewport than it does in the comp.
+      Mobile / tablet (below `xl`): the section is a normal stacked block, so the
+      chain is a centered supporting motif beneath the copy — capped so a portrait
+      chain never runs taller than it should on a narrow phone.
 
-      Both caps are scaled up from the comp's own proportions to give the chain
-      a larger, more present footprint at the edge while keeping the same
-      bottom-anchored bleed and the same clearance logic.
+      Desktop (`xl`+): the chain is a large motif anchored to the bottom, rising up
+      the side and bleeding off the bottom (and, on a short screen, the top too).
+      It sits a little in from the trailing edge (`end-[4vw]`) rather than flush
+      against it, so it reads as more central and less tucked into the corner, and
+      its width is `42vw` (capped at `40rem`) — large and present, but sized so the
+      full portrait chain fits within the section's height rather than bleeding off
+      the top, while its inner edge still stops clear of the copy column on the
+      opposite side.
 
-      Taking the `min()` means a tall screen is limited by width and a short, wide
-      one by height, so the chain always sits fully on screen and always clear of
-      the text. Height then follows from the frame's own aspect ratio.
-
-      Below `xl` the section is a normal stacked block, so plain width sizing is
-      correct and the artwork is scaled back to stay a supporting motif.
+      The desktop `max-width` is written as an explicit arbitrary cap matching the
+      width's own rem ceiling, rather than `max-w-none`: Tailwind sorts the static
+      `max-w-none` utility ahead of the arbitrary `sm:max-w-[22rem]`, so `none`
+      lost the cascade at `xl` and the chain stayed clamped to the small mobile
+      cap. Two arbitrary caps of the same kind sort by breakpoint instead, so the
+      `xl` one correctly wins. (Keep this cap's value in sync with the `xl:w-`
+      rem ceiling above, and avoid writing other `max-w-[…]` literals in this
+      comment — Tailwind scans comment text and would emit phantom rules.)
     */
     <RevealOnView
-      className={`relative me-auto w-full sm:w-[72%] sm:max-w-[46rem] xl:absolute xl:bottom-0 xl:end-0 xl:me-0 xl:w-[min(150vw,215svh)] xl:max-w-none${
+      className={`relative mx-auto w-[68%] max-w-[20rem] sm:w-[56%] sm:max-w-[22rem] xl:absolute xl:bottom-0 xl:end-[4vw] xl:mx-0 xl:w-[min(42vw,40rem)] xl:max-w-[40rem] ${
         /* English LTR: mirror the whole positioning box so the chain bleeds off
            its trailing (physical-right) edge, the same distance from that edge
            as it sits from the left in Arabic. The flip lives here, on the outer
@@ -93,16 +95,16 @@ export function MeaningChain({
         style={{ aspectRatio: `${ART.width} / ${ART.height}` }}
       >
         <Image
-          src="/images/landing/extracted/04-section-2-left-chain.png"
+          src="/images/landing/extracted/04-section-2-rising-chain.png"
           alt={alt}
           width={ASSET.width}
           height={ASSET.height}
           /*
-            The rendered image is `ASSET.width / ART.width` (≈1.66x) wider than
+            The rendered image is `ASSET.width / ART.width` (≈1.45x) wider than
             its visible frame, so the useful download width is that multiple of
-            the frame's share of the viewport: ~86vw below `lg`, 60vw above.
+            the frame's share of the viewport: ~82vw below `xl`, ~64vw above.
           */
-          sizes="(max-width: 1023px) 143vw, 100vw"
+          sizes="(max-width: 1279px) 82vw, 82vw"
           className="absolute max-w-none"
           style={{
             width: `${(ASSET.width / ART.width) * 100}%`,
