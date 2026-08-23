@@ -160,16 +160,17 @@ export async function LearningFlow() {
         />
 
         {/*
-          Chain layer, behind the cards (`z-0`). Anchored to the bottom but
-          scaled beyond the section edges (`-inset-x`) and enlarged so the links
-          are bold and confident — the spine of the section — and clearly pass
-          through the gaps between the cards above. `pointer-events-none` +
-          purely decorative. On mobile the cards stack, so the chain becomes a
-          quiet full-width backdrop rather than a between-cards connector.
+          Desktop/tablet chain (`sm+`), behind the cards (`z-0`). Anchored to the
+          bottom but scaled beyond the section edges (`-inset-x`) and enlarged so
+          the links are bold and confident — the spine of the section — and
+          clearly pass through the gaps between the cards riding on it.
+          `pointer-events-none` + purely decorative.
         */}
-        <div className="pointer-events-none absolute -inset-x-[6%] bottom-[8%] z-0">
+        <div className="pointer-events-none absolute -inset-x-[6%] bottom-[8%] z-0 hidden sm:block">
           <FlowChain alt={t("chainAlt")} dir={dir} />
         </div>
+
+
 
         {/*
           Cards on top (`z-10`). Each is a solid panel holding its number, title,
