@@ -54,7 +54,7 @@ export function ExtensionScreen({ alt }: { alt: string }) {
           {/* Plain <img> per the spec: byte-identical file. Below-fold, lazy. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/landing/extracted/02-hero-extension-real.png"
+            src="/images/landing/extracted/02-hero-extension-real.webp"
             alt={alt}
             width={1620}
             height={960}

@@ -101,7 +101,7 @@ export function MeaningChain({
         style={{ aspectRatio: `${ART.width} / ${ART.height}` }}
       >
         <Image
-          src="/images/landing/extracted/04-section-2-rising-chain.png"
+          src="/images/landing/extracted/04-section-2-rising-chain.webp"
           alt={alt}
           width={ASSET.width}
           height={ASSET.height}

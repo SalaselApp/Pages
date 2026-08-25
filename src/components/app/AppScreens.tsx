@@ -61,7 +61,7 @@ export function AppScreens({
   const screens: Screen[] = [
     {
       key: "rear",
-      src: "/images/landing/product-screenshots/player-notes.png",
+      src: "/images/landing/product-screenshots/player-notes.webp",
       alt: playerAlt,
       width: 1887,
       height: 868,
@@ -69,7 +69,7 @@ export function AppScreens({
     },
     {
       key: "middle",
-      src: "/images/landing/product-screenshots/series-detail.png",
+      src: "/images/landing/product-screenshots/series-detail.webp",
       alt: seriesAlt,
       width: 1868,
       height: 866,
@@ -77,7 +77,7 @@ export function AppScreens({
     },
     {
       key: "front",
-      src: "/images/landing/product-screenshots/home-catalog.png",
+      src: "/images/landing/product-screenshots/home-catalog.webp",
       alt: homeAlt,
       width: 1862,
       height: 867,

@@ -36,7 +36,7 @@ import { localeDirection, type AppLocale } from "@/i18n/routing";
 
 /** Approved Section 8 mark master. Kept byte-identical; CSS only scales it. */
 const MARK = {
-  src: "/images/landing/extracted/08-section-8-left-logo-background.png",
+  src: "/images/landing/extracted/08-section-8-left-logo-background.webp",
   width: 1915,
   height: 821,
 } as const;

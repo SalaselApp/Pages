@@ -100,7 +100,7 @@ export function FlowChain({
             aspect-ratio so nothing shifts as it decodes. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/landing/extracted/07-section-5-clean-chain-background.png"
+          src="/images/landing/extracted/07-section-5-clean-chain-background.webp"
           alt={alt}
           width={ASSET.width}
           height={ASSET.height}

@@ -18,12 +18,12 @@ import { localeDirection, type AppLocale } from "@/i18n/routing";
  */
 const SHOTS = {
   choose: {
-    src: "/images/landing/product-screenshots/flow-extension-return.png",
+    src: "/images/landing/product-screenshots/flow-extension-return.webp",
     width: 873,
     height: 489,
   },
   stay: {
-    src: "/images/landing/product-screenshots/flow-extension-panel.png",
+    src: "/images/landing/product-screenshots/flow-extension-panel.webp",
     width: 1288,
     height: 531,
   },
