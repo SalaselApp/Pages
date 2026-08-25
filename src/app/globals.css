@@ -1013,6 +1013,70 @@ body {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Back-to-top control
+   ---------------------------------------------------------------------------
+   A floating pill that appears only once the footer is in view (its `data-shown`
+   is toggled by the `BackToTop` island) and returns the reader to the hero.
+   Fixed to the reading-end/bottom corner using logical `inset-inline-end`, so it
+   sits bottom-left in Arabic (RTL) and bottom-right in English (LTR) without any
+   per-locale override. Hidden state is non-interactive and lifted slightly, so
+   the reveal reads as a small rise + fade. */
+.back-to-top {
+  position: fixed;
+  bottom: clamp(1.25rem, 3vw, 2rem);
+  inset-inline-end: clamp(1.25rem, 3vw, 2rem);
+  z-index: 40;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Comfortably above the 44x44 minimum touch target. */
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+
+  color: var(--cream);
+  background-color: color-mix(in srgb, var(--canvas-raised) 82%, transparent);
+  border: 1px solid var(--hairline-strong);
+  /* Quiet shadow plus a controlled green glow, matching the palette. */
+  box-shadow:
+    0 8px 24px rgb(0 0 0 / 38%),
+    0 0 18px rgb(67 160 138 / 22%);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+
+  /* Hidden resting state. */
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  pointer-events: none;
+  transition:
+    opacity 260ms ease,
+    transform 260ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+.back-to-top[data-shown="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  background-color: color-mix(in srgb, var(--panel-hover) 90%, transparent);
+  border-color: var(--teal);
+}
+
+.back-to-top svg {
+  transition: transform 200ms ease;
+}
+
+.back-to-top:hover svg {
+  transform: translateY(-2px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motif,
   .motif-end,
@@ -1098,6 +1162,19 @@ body {
 
   .rise {
     opacity: 1;
+    transform: none;
+  }
+
+  /* The button still appears/disappears, but without the rise or scale glide —
+     it simply fades, and its hover nudge is dropped. */
+  .back-to-top {
+    transform: none !important;
+    transition: opacity 200ms ease;
+  }
+  .back-to-top[data-shown="true"] {
+    transform: none !important;
+  }
+  .back-to-top:hover svg {
     transform: none;
   }
 

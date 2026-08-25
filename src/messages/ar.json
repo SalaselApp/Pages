@@ -8,7 +8,8 @@
   },
   "nav": {
     "skipToContent": "تخطَّ إلى المحتوى",
-    "languageLabel": "اللغة"
+    "languageLabel": "اللغة",
+    "backToTop": "العودة إلى الأعلى"
   },
   "hero": {
     "headline": "اختر ما ينفعك، واثبت عليه.",

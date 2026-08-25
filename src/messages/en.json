@@ -8,7 +8,8 @@
   },
   "nav": {
     "skipToContent": "Skip to content",
-    "languageLabel": "Language"
+    "languageLabel": "Language",
+    "backToTop": "Back to top"
   },
   "hero": {
     "headline": "Learn with intention. Stay the course.",

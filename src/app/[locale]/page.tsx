@@ -6,6 +6,7 @@ import { ChromeExtension } from "@/components/extension/ChromeExtension";
 import { FinalAction } from "@/components/final/FinalAction";
 import { LearningFlow } from "@/components/flow/LearningFlow";
 import { Footer } from "@/components/footer/Footer";
+import { BackToTop } from "@/components/BackToTop";
 import { Hero } from "@/components/hero/Hero";
 import { Meaning } from "@/components/meaning/Meaning";
 import { Privacy } from "@/components/privacy/Privacy";
@@ -33,7 +34,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       >
         {t("skipToContent")}
       </a>
-      <main id="main" className="flex flex-1 flex-col">
+      <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
         <Hero />
         <Meaning />
         <SalaselApp />
@@ -43,6 +44,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         <FinalAction />
       </main>
       <Footer />
+      <BackToTop label={t("backToTop")} />
     </>
   );
 }

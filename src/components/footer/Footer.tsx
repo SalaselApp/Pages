@@ -95,6 +95,7 @@ export async function Footer() {
         footer from the section above it — the comp's only divider — so the band
         reads as a quiet close rather than a boxed region.
       */
+      id="site-footer"
       className="bg-canvas text-cream border-hairline w-full border-t"
     >
       <h2 id="footer-heading" className="sr-only">
