@@ -37,9 +37,28 @@ export const links = {
     pending: !process.env.NEXT_PUBLIC_SOURCE_URL,
     external: true,
   },
-  /** Extension privacy policy. Intended final path is `/extension/privacy`. */
+  /**
+   * App privacy policy. A real in-site page at `/{locale}/privacy`, so the
+   * locale prefix is added at render time from the active locale.
+   */
+  appPrivacy: {
+    href: "/privacy",
+    pending: false,
+  },
+  /**
+   * Extension privacy policy — the stable URL Chrome Web Store submission
+   * requires. A real in-site page at `/{locale}/extension/privacy`.
+   */
   extensionPrivacy: {
-    href: "#privacy",
+    href: "/extension/privacy",
+    pending: false,
+  },
+  /**
+   * Feedback/contact. Points at the pending Section 9 feedback form anchor
+   * (`#feedback`) until that section lands.
+   */
+  feedback: {
+    href: "#feedback",
     pending: true,
   },
 } satisfies Record<string, Destination>;

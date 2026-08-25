@@ -158,5 +158,102 @@
     },
     "note": "Each product works on its own — and they work better together.",
     "logoAlt": ""
+  },
+  "footer": {
+    "mission": "A focused place to learn with intention, and an optional extension that calms YouTube.",
+    "navLabel": "Footer",
+    "groups": {
+      "product": {
+        "title": "Product",
+        "links": {
+          "app": "Salasel App",
+          "extension": "Chrome Extension"
+        }
+      },
+      "privacy": {
+        "title": "Privacy",
+        "links": {
+          "app": "App Privacy Policy",
+          "extension": "Extension Privacy Policy"
+        }
+      },
+      "openness": {
+        "title": "Openness",
+        "links": {
+          "source": "Source on GitHub"
+        }
+      }
+    }
+  },
+  "legal": {
+    "backToHome": "Back to home",
+    "lastUpdated": "Last updated",
+    "lastUpdatedDate": "August 2026",
+    "appPrivacy": {
+      "metaTitle": "App Privacy Policy — Salasel",
+      "metaDescription": "How the Salasel app handles your data: no account, no tracking, and your learning kept in your browser.",
+      "eyebrow": "Salasel App",
+      "title": "App Privacy Policy",
+      "intro": "Salasel is built to be used without handing over your data. This policy describes what the app does and does not collect. It uses plain, verifiable terms rather than broad promises.",
+      "sections": {
+        "noAccount": {
+          "title": "No account, no tracking",
+          "body": "Using Salasel does not require you to create an account. There is no analytics, no advertising, and no sale of your data. Ever."
+        },
+        "onDevice": {
+          "title": "Your learning stays in your browser",
+          "body": "Your learning progress, preferences, and notes are stored in your own browser. They are not uploaded to a server we control as part of normal use."
+        },
+        "feedback": {
+          "title": "Feedback you choose to send",
+          "body": "If you fill in and submit the feedback form, the message you write is transmitted so we can read it. Nothing is sent unless you explicitly submit it."
+        },
+        "openSource": {
+          "title": "Open source",
+          "body": "The project's source is open, so these claims can be verified in the code itself. You can read it, check it, or build on it."
+        },
+        "changes": {
+          "title": "Changes to this policy",
+          "body": "If this policy changes, the updated version will be published on this page with a new date."
+        }
+      }
+    },
+    "extensionPrivacy": {
+      "metaTitle": "Extension Privacy Policy — Salasel",
+      "metaDescription": "How the Salasel Chrome extension handles your data: it hides only what you choose, keeps notes in your browser, and cannot read your browser sync.",
+      "eyebrow": "Chrome Extension",
+      "title": "Extension Privacy Policy",
+      "intro": "The Salasel extension is optional and works on YouTube to hide only the distractions you choose. This policy describes exactly what it does with your data.",
+      "sections": {
+        "noTracking": {
+          "title": "No account, no tracking",
+          "body": "The extension does not require an account, does not track your browsing, includes no analytics, and never sells your data."
+        },
+        "onDevice": {
+          "title": "Preferences kept in your browser",
+          "body": "Your distraction toggles and notes are stored in your browser. They are not uploaded to a server we control as part of normal use."
+        },
+        "sync": {
+          "title": "Sync you control",
+          "body": "Your extension preferences may use your browser account's built-in sync so they follow you between devices. That sync is controlled by your browser provider and your browser account. We cannot access that data."
+        },
+        "permissions": {
+          "title": "What the extension can access",
+          "body": "The extension runs on YouTube so it can hide the elements you turn off and show a way back to your Salasel series. It reads and changes the page only to do that, and only for the distractions you have switched on."
+        },
+        "feedback": {
+          "title": "Feedback you choose to send",
+          "body": "Any feedback is transmitted only when you explicitly submit it. Nothing is sent otherwise."
+        },
+        "openSource": {
+          "title": "Open source",
+          "body": "The extension's source is open, so its behaviour can be verified directly in the code."
+        },
+        "changes": {
+          "title": "Changes to this policy",
+          "body": "If this policy changes, the updated version will be published on this page with a new date."
+        }
+      }
+    }
   }
 }
