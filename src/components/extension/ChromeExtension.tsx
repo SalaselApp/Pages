@@ -186,7 +186,7 @@ export async function ChromeExtension() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_65%_at_50%_42%,rgba(37,52,58,0.9),transparent_65%),radial-gradient(70%_55%_at_50%_45%,rgba(35,120,102,0.18),transparent_62%)]"
         />
-        <ExtensionScreen alt={t("screenAlt")} />
+        <ExtensionScreen alt={t("screenAlt")} notesAlt={t("screenNotesAlt")} />
       </div>
     </section>
   );

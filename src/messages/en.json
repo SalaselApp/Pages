@@ -80,7 +80,8 @@
     },
     "note": "The extension is optional. You do not need it to use Salasel or YouTube.",
     "cta": "Add to Chrome",
-    "screenAlt": "The Salasel extension open on a YouTube video, with distraction toggles and a notes panel."
+    "screenAlt": "The Salasel extension open on a YouTube video, with distraction toggles and a notes panel.",
+    "screenNotesAlt": "The Salasel extension note-taking panel open beside a YouTube video, showing timestamped notes on the lesson."
   },
   "flow": {
     "eyebrow": "One learning flow",
