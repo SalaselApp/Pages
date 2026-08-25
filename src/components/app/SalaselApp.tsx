@@ -129,6 +129,9 @@ export async function SalaselApp() {
           >
             <a
               href={links.app.href}
+              {...(links.app.external
+                ? { target: "_blank", rel: "noreferrer noopener" }
+                : {})}
               className="bg-teal-brand text-canvas hover:bg-teal-brand/90 inline-flex min-h-11 items-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition-colors duration-200"
             >
               {t("cta")}

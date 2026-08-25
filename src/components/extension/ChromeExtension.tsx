@@ -142,6 +142,9 @@ export async function ChromeExtension() {
           <div className="reveal-rise mt-1" style={{ animationDelay: "0.48s" }}>
             <a
               href={links.extension.href}
+              {...(links.extension.external
+                ? { target: "_blank", rel: "noreferrer noopener" }
+                : {})}
               className="bg-teal-deep text-paper hover:bg-teal-deep/90 inline-flex min-h-11 items-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition-colors duration-200"
             >
               {t("cta")}

@@ -19,8 +19,8 @@ import { localeDirection, type AppLocale } from "@/i18n/routing";
  * filled teal treatment and the extension path a quiet outline: both are equal
  * full-size targets, so neither reads as subordinate; only the fill differs, as
  * a final nudge toward the native learning home. Both links point at the same
- * pending destinations as the hero (`links.app` / `links.extension`), so the
- * whole page repoints from one place once the real URLs land.
+ * destinations as the hero (`links.app` / `links.extension`), so the whole page
+ * repoints from one place once the final extension listing URL lands.
  *
  * The oversized mark is the approved Section 8 background master
  * (`08-section-8-left-logo-background.png`), already an alpha-isolated
@@ -233,6 +233,9 @@ function FinalPath({
   return (
     <a
       href={destination.href}
+      {...(destination.external
+        ? { target: "_blank", rel: "noreferrer noopener" }
+        : {})}
       className={`group flex h-full min-h-24 items-center gap-4 rounded-2xl border p-5 text-start transition-colors duration-200 sm:gap-5 sm:p-6 ${surface}`}
     >
       <span className="shrink-0">{icon}</span>

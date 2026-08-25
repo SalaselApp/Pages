@@ -59,6 +59,9 @@ export function ProductPath({
 
       <a
         href={destination.href}
+        {...(destination.external
+          ? { target: "_blank", rel: "noreferrer noopener" }
+          : {})}
         className="border-hairline-strong text-cream hover:bg-lime-brand/10 hover:border-lime-brand/50 mt-auto inline-flex min-h-11 w-full items-center justify-center rounded-full border px-6 text-sm font-medium transition-colors duration-200 sm:w-auto sm:self-start"
       >
         {cta}

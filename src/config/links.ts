@@ -13,18 +13,30 @@ export type Destination = {
 };
 
 export const links = {
-  /** The Salasel web app. Final production URL still unconfirmed. */
+  /**
+   * The Salasel web app. Read from `NEXT_PUBLIC_APP_URL` (inlined at build time
+   * for the static export) so it can be repointed without touching markup;
+   * falls back to the known production URL. A real, published destination, so
+   * it is not pending and opens in a new tab.
+   */
   app: {
-    href: "#salasel-app",
-    pending: true,
+    href: process.env.NEXT_PUBLIC_APP_URL ?? "https://salasel.app/",
+    pending: false,
+    external: true,
   },
   /**
-   * Chrome Web Store listing. The extension is unpublished, so this stays an
-   * in-page anchor instead of a fabricated store URL.
+   * Chrome Web Store listing. The extension is not published yet, so until its
+   * real listing URL is known this points at the Chrome Web Store home (set via
+   * `NEXT_PUBLIC_EXTENSION_URL` once the listing exists). It is still marked
+   * `pending` so the provisional destination is surfaced in the handoff, and it
+   * opens in a new tab.
    */
   extension: {
-    href: "#chrome-extension",
-    pending: true,
+    href:
+      process.env.NEXT_PUBLIC_EXTENSION_URL ??
+      "https://chromewebstore.google.com/",
+    pending: !process.env.NEXT_PUBLIC_EXTENSION_URL,
+    external: true,
   },
   /**
    * Source repository. Read from `NEXT_PUBLIC_SOURCE_URL` (inlined at build
