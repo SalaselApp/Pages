@@ -890,6 +890,129 @@ body {
   animation: salasel-flow-draw 1.25s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
+/* ---------------------------------------------------------------------------
+ * Section 8 — final-action chain mark
+ *
+ * The oversized chain master sits dark against the canvas, so it gets the comp's
+ * quiet "lit edge" treatment plus a little life, built from three stacked
+ * layers that all share the SAME PNG as a mask. Masking with the artwork means
+ * every glow is clipped to the chain's own silhouette — light only ever appears
+ * *on* the links, never as a rectangle floating behind them.
+ *
+ *   1. `.final-mark-img`   — the artwork itself (a plain <img>).
+ *   2. `.final-mark-sheen` — a soft green wash over the whole chain that slowly
+ *      breathes, so the dark relief reads as gently lit rather than flat.
+ *   3. `.final-mark-trace` — a brighter, narrower band of green that travels
+ *      slowly down the chain, like light running through the links — the same
+ *      "connection flowing" gesture as the hero network, and on-metaphor for a
+ *      chain. It is a tall gradient whose position animates on `background-position`.
+ *
+ * Both animated layers use `mask-image`, are `pointer-events-none`, and inherit
+ * the parent's `scaleX(-1)` mirror in LTR, so they stay locked to the artwork in
+ * both locales. Only `opacity` and `background-position` animate; the mask and
+ * the element box never change size, so there is no layout cost.
+ * ------------------------------------------------------------------------- */
+
+.final-mark {
+  position: absolute;
+  inset: 0;
+}
+
+.final-mark-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+}
+
+/* Shared mask setup for the two glow layers: the artwork's own alpha clips the
+   gradient to the chain shape. `mask-image` is set inline in the component
+   (it needs the asset URL); here we lock the sizing/position so the mask lines
+   up pixel-for-pixel with the <img> above. */
+.final-mark-sheen,
+.final-mark-trace {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-position: left center;
+  mask-position: left center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mix-blend-mode: screen;
+}
+
+/* Layer 2: a broad emerald wash that slowly breathes, lifting the chain out of
+   the dark. Anchored to the lit (reading-end) edge, matching the comp's glow. */
+.final-mark-sheen {
+  background: radial-gradient(
+    120% 90% at 12% 40%,
+    rgba(72, 168, 140, 0.55) 0%,
+    rgba(48, 143, 107, 0.3) 34%,
+    transparent 68%
+  );
+  opacity: 0.5;
+  animation: salasel-mark-breathe 11s ease-in-out infinite;
+}
+
+/* Layer 3: the travelling light. A tall, mostly-transparent gradient with one
+   bright green band; sliding its `background-position` down runs that band along
+   the chain. `background-size` taller than the box gives the band room to enter
+   and leave off-screen, so it reads as light passing through rather than a strip
+   fading in place. */
+.final-mark-trace {
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 30%,
+    rgba(149, 209, 149, 0.35) 42%,
+    rgba(207, 236, 207, 0.85) 50%,
+    rgba(149, 209, 149, 0.35) 58%,
+    transparent 70%,
+    transparent 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 260%;
+  background-position: 0% -60%;
+  opacity: 0.9;
+  animation: salasel-mark-trace 7.5s ease-in-out infinite;
+}
+
+@keyframes salasel-mark-breathe {
+  0%,
+  100% {
+    opacity: 0.38;
+  }
+  50% {
+    opacity: 0.62;
+  }
+}
+
+/* Slides the bright band from above the chain, down through it, and out below,
+   then holds dark for the rest of the cycle so pulses arrive in a slow, calm
+   rhythm rather than continuously. */
+@keyframes salasel-mark-trace {
+  0% {
+    background-position: 0% -60%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.9;
+  }
+  42% {
+    opacity: 0.9;
+  }
+  50% {
+    background-position: 0% 160%;
+    opacity: 0;
+  }
+  100% {
+    background-position: 0% 160%;
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motif,
   .motif-end,
@@ -954,6 +1077,18 @@ body {
 
   .app-deck {
     transition: none !important;
+  }
+
+  /* Section 8 mark: keep a calm static lit edge, drop the breathing and the
+     travelling light. The sheen stays (at its resting strength) so the chain is
+     still gently lit; the moving trace is removed entirely. */
+  .final-mark-sheen {
+    animation: none !important;
+    opacity: 0.5 !important;
+  }
+  .final-mark-trace {
+    animation: none !important;
+    display: none;
   }
 
   /* The travelling lights carry no information, so they simply go away. */

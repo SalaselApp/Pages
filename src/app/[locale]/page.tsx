@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { SalaselApp } from "@/components/app/SalaselApp";
 import { ChromeExtension } from "@/components/extension/ChromeExtension";
+import { FinalAction } from "@/components/final/FinalAction";
 import { LearningFlow } from "@/components/flow/LearningFlow";
 import { Hero } from "@/components/hero/Hero";
 import { Meaning } from "@/components/meaning/Meaning";
@@ -38,6 +39,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         <ChromeExtension />
         <LearningFlow />
         <Privacy />
+        <FinalAction />
       </main>
     </>
   );

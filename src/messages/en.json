@@ -142,5 +142,21 @@
       "text": "The project's source is open. Read it, verify it, or build on it.",
       "cta": "View the source"
     }
+  },
+  "finalAction": {
+    "eyebrow": "Choose your start",
+    "heading": "Begin with what suits you.",
+    "lead": "The path is yours, and Salasel keeps your direction.",
+    "choicesLabel": "Two ways to start",
+    "app": {
+      "eyebrow": "Salasel App",
+      "title": "Begin with a series"
+    },
+    "extension": {
+      "eyebrow": "Chrome extension",
+      "title": "Make YouTube calmer"
+    },
+    "note": "Each product works on its own — and they work better together.",
+    "logoAlt": ""
   }
 }
