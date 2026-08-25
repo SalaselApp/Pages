@@ -60,23 +60,29 @@ export function MeaningChain({
       Desktop (`xl`+): the chain is a large motif anchored to the bottom, rising up
       the side and bleeding off the bottom (and, on a short screen, the top too).
       It sits a little in from the trailing edge (`end-[4vw]`) rather than flush
-      against it, so it reads as more central and less tucked into the corner, and
-      its width is `42vw` (capped at `40rem`) — large and present, but sized so the
-      full portrait chain fits within the section's height rather than bleeding off
-      the top, while its inner edge still stops clear of the copy column on the
-      opposite side.
+      against it, so it reads as more central and less tucked into the corner.
 
-      The desktop `max-width` is written as an explicit arbitrary cap matching the
-      width's own rem ceiling, rather than `max-w-none`: Tailwind sorts the static
-      `max-w-none` utility ahead of the arbitrary `sm:max-w-[22rem]`, so `none`
-      lost the cascade at `xl` and the chain stayed clamped to the small mobile
-      cap. Two arbitrary caps of the same kind sort by breakpoint instead, so the
-      `xl` one correctly wins. (Keep this cap's value in sync with the `xl:w-`
-      rem ceiling above, and avoid writing other `max-w-[…]` literals in this
-      comment — Tailwind scans comment text and would emit phantom rules.)
+      Its width is a *fixed* `38rem`, not a viewport-relative `vw`, on purpose.
+      A `vw`-scaled chain grows and shrinks with the window, so the same section
+      viewed at two different desktop widths — or the two locales screenshotted at
+      different widths — shows visibly different chain sizes even though the code
+      is identical per locale. Pinning the width in `rem` makes the artwork a
+      constant physical size across every desktop width and both locales, which is
+      what "identical in size" requires. The full portrait chain still fits inside
+      the section's height at this size, and its inner edge stays clear of the copy
+      column on the opposite side.
+
+      The desktop `max-width` repeats the same `rem` value as an explicit arbitrary
+      cap rather than `max-w-none`: Tailwind sorts the static `max-w-none` utility
+      ahead of the arbitrary `sm:max-w-[22rem]`, so `none` lost the cascade at `xl`
+      and the chain stayed clamped to the small mobile cap. Two arbitrary caps of
+      the same kind sort by breakpoint instead, so the `xl` one correctly wins.
+      (Keep this cap in sync with the `xl:w-` value above, and avoid writing other
+      `max-w-[…]` literals in this comment — Tailwind scans comment text and would
+      emit phantom rules.)
     */
     <RevealOnView
-      className={`relative mx-auto w-[68%] max-w-[20rem] sm:w-[56%] sm:max-w-[22rem] xl:absolute xl:bottom-0 xl:end-[4vw] xl:mx-0 xl:w-[min(42vw,40rem)] xl:max-w-[40rem] ${
+      className={`relative mx-auto w-[68%] max-w-[20rem] sm:w-[56%] sm:max-w-[22rem] xl:absolute xl:bottom-0 xl:end-[4vw] xl:mx-0 xl:w-[38rem] xl:max-w-[38rem] ${
         /* English LTR: mirror the whole positioning box so the chain bleeds off
            its trailing (physical-right) edge, the same distance from that edge
            as it sits from the left in Arabic. The flip lives here, on the outer
@@ -101,10 +107,11 @@ export function MeaningChain({
           height={ASSET.height}
           /*
             The rendered image is `ASSET.width / ART.width` (≈1.45x) wider than
-            its visible frame, so the useful download width is that multiple of
-            the frame's share of the viewport: ~82vw below `xl`, ~64vw above.
+            its visible frame. Below `xl` the frame is a share of the viewport
+            (~82vw of image once the overscale is applied); at `xl`+ the frame is
+            a fixed 38rem, so the image is a fixed ~880px regardless of width.
           */
-          sizes="(max-width: 1279px) 82vw, 82vw"
+          sizes="(min-width: 1280px) 880px, 82vw"
           className="absolute max-w-none"
           style={{
             width: `${(ASSET.width / ART.width) * 100}%`,
