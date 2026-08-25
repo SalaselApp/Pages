@@ -56,8 +56,10 @@ export function BackToTop({ label }: { label: string }) {
     ).matches;
     window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
     // Return focus to the top of the document so keyboard users land back at
-    // the start rather than on a now-offscreen control.
-    document.getElementById("main")?.focus?.();
+    // the start. `preventScroll` is essential: a plain focus() scrolls the
+    // element into view and would interrupt the smooth scroll partway, leaving
+    // the reader short of the very top.
+    document.getElementById("main")?.focus?.({ preventScroll: true });
   };
 
   return (

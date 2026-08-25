@@ -1018,14 +1018,14 @@ body {
    ---------------------------------------------------------------------------
    A floating pill that appears only once the footer is in view (its `data-shown`
    is toggled by the `BackToTop` island) and returns the reader to the hero.
-   Fixed to the reading-end/bottom corner using logical `inset-inline-end`, so it
-   sits bottom-left in Arabic (RTL) and bottom-right in English (LTR) without any
-   per-locale override. Hidden state is non-interactive and lifted slightly, so
-   the reveal reads as a small rise + fade. */
+   Centered horizontally at the bottom of the viewport; the `translateX(-50%)`
+   is direction-agnostic, so it stays centered in both Arabic and English.
+   Hidden state is non-interactive and lifted slightly, so the reveal reads as a
+   small rise + fade. */
 .back-to-top {
   position: fixed;
   bottom: clamp(1.25rem, 3vw, 2rem);
-  inset-inline-end: clamp(1.25rem, 3vw, 2rem);
+  left: 50%;
   z-index: 40;
 
   display: inline-flex;
@@ -1047,9 +1047,9 @@ body {
   backdrop-filter: blur(8px);
   cursor: pointer;
 
-  /* Hidden resting state. */
+  /* Hidden resting state. The -50% X keeps it centered while it rises. */
   opacity: 0;
-  transform: translateY(8px) scale(0.96);
+  transform: translateX(-50%) translateY(8px) scale(0.96);
   pointer-events: none;
   transition:
     opacity 260ms ease,
@@ -1060,7 +1060,7 @@ body {
 
 .back-to-top[data-shown="true"] {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateX(-50%) translateY(0) scale(1);
   pointer-events: auto;
 }
 
@@ -1166,13 +1166,12 @@ body {
   }
 
   /* The button still appears/disappears, but without the rise or scale glide —
-     it simply fades, and its hover nudge is dropped. */
-  .back-to-top {
-    transform: none !important;
-    transition: opacity 200ms ease;
-  }
+     it simply fades, and its hover nudge is dropped. Centering is preserved
+     (only the rise/scale is removed). */
+  .back-to-top,
   .back-to-top[data-shown="true"] {
-    transform: none !important;
+    transform: translateX(-50%) !important;
+    transition: opacity 200ms ease;
   }
   .back-to-top:hover svg {
     transform: none;
