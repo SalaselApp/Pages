@@ -113,5 +113,34 @@
       "onYouTube": "On YouTube"
     },
     "chainAlt": "A chain of interlocking links, lit in green, connecting each step of the flow."
+  },
+  "privacy": {
+    "eyebrow": "Privacy and openness",
+    "headingLead": "Yours to keep.",
+    "headingAccent": "Open to see.",
+    "lead": "No account to create, nothing to track. What stays private stays with you, and what we build stays open to read.",
+    "points": {
+      "noTracking": {
+        "title": "No account, no tracking",
+        "text": "No sign-up, no analytics, and no sale of your data. Ever."
+      },
+      "onDevice": {
+        "title": "Kept in your browser",
+        "text": "Your learning progress, preferences, and notes stay in your browser."
+      },
+      "sync": {
+        "title": "Sync you control",
+        "text": "Extension preferences may use your browser account's sync, controlled by you. We cannot access that data."
+      },
+      "feedback": {
+        "title": "Only what you send",
+        "text": "Feedback is transmitted only when you choose to submit it."
+      }
+    },
+    "openSource": {
+      "title": "Open source",
+      "text": "The project's source is open. Read it, verify it, or build on it.",
+      "cta": "View the source"
+    }
   }
 }

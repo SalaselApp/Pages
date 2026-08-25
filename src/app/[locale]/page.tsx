@@ -6,6 +6,7 @@ import { ChromeExtension } from "@/components/extension/ChromeExtension";
 import { LearningFlow } from "@/components/flow/LearningFlow";
 import { Hero } from "@/components/hero/Hero";
 import { Meaning } from "@/components/meaning/Meaning";
+import { Privacy } from "@/components/privacy/Privacy";
 import { routing } from "@/i18n/routing";
 
 export function generateStaticParams() {
@@ -36,6 +37,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         <SalaselApp />
         <ChromeExtension />
         <LearningFlow />
+        <Privacy />
       </main>
     </>
   );

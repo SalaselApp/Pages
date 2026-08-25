@@ -26,10 +26,15 @@ export const links = {
     href: "#chrome-extension",
     pending: true,
   },
-  /** Source repository. */
+  /**
+   * Source repository. Read from `NEXT_PUBLIC_SOURCE_URL` (inlined at build
+   * time for the static export) so the destination can be repointed without
+   * touching markup; falls back to an in-page anchor when unset. The
+   * GitHub org home is a real, published destination, so this is not pending.
+   */
   source: {
-    href: "#source",
-    pending: true,
+    href: process.env.NEXT_PUBLIC_SOURCE_URL ?? "#source",
+    pending: !process.env.NEXT_PUBLIC_SOURCE_URL,
     external: true,
   },
   /** Extension privacy policy. Intended final path is `/extension/privacy`. */
