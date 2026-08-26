@@ -1,11 +1,10 @@
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { DecorativeNetwork } from "@/components/hero/DecorativeNetwork";
 import { HeroMark } from "@/components/hero/HeroMark";
 import { AppIcon, ExtensionIcon } from "@/components/hero/ProductIcons";
 import { ProductPath } from "@/components/hero/ProductPath";
 import { SiteHeader } from "@/components/SiteHeader";
 import { links } from "@/config/links";
-import { localeDirection, type AppLocale } from "@/i18n/routing";
 
 /**
  * Hero: one identity, two equal product choices.
@@ -16,9 +15,15 @@ import { localeDirection, type AppLocale } from "@/i18n/routing";
  */
 export async function Hero() {
   const t = await getTranslations("hero");
-  const locale = (await getLocale()) as AppLocale;
-  // The equivalent line is always written in the other language.
-  const equivalentLocale = locale === "ar" ? "en" : "ar";
+  // The rotating headline speaks the hadith one clause at a time, in reading
+  // order. Each clause splits into a lead and its final word, so the final word
+  // can take the theme's teal accent. Kept as an ordered list so the source
+  // sentence stays obvious here.
+  const phrases = [
+    { lead: t("phases.one.lead"), last: t("phases.one.last") },
+    { lead: t("phases.two.lead"), last: t("phases.two.last") },
+    { lead: t("phases.three.lead"), last: t("phases.three.last") },
+  ];
 
   // `min-h-svh` plus a column layout makes the hero one self-contained screen:
   // the header pins to the top, the content column takes the remaining space,
@@ -45,26 +50,38 @@ export async function Hero() {
           <HeroMark />
         </div>
 
-        <div className="flex w-full max-w-4xl flex-col items-center gap-2 text-center">
-          {/* The one meaningful h1 on the page. */}
+        <div className="flex w-full max-w-4xl flex-col items-center gap-3 text-center sm:gap-4">
+          {/*
+            The one meaningful h1 on the page. It cycles through the three
+            clauses of the hadith with a pure-CSS rotator, so it renders without
+            JavaScript. Assistive tech reads the full hadith once via the
+            visually-hidden line; the rotating clauses are hidden from a11y so a
+            screen reader never hears the sentence broken into fragments.
+          */}
           <h1
             className="rise text-cream text-[clamp(1.75rem,5vw,3.25rem)] leading-[1.2] font-semibold tracking-[-0.01em] text-balance"
             style={{ animationDelay: "0.08s" }}
           >
-            {t("headline")}
+            <span className="hero-phrase-sr">{t("hadith")}</span>
+            <span className="hero-phrases" aria-hidden="true">
+              {phrases.map((phrase, i) => (
+                <span key={i} className={`hero-phrase hero-phrase-${i + 1}`}>
+                  {phrase.lead}{" "}
+                  <span className="text-teal-brand">{phrase.last}</span>
+                </span>
+              ))}
+            </span>
           </h1>
 
           {/*
-            The other language's equivalent line, deliberately smaller. `lang`
-            and `dir` switch so screen readers and font selection follow script.
+            The Salasel tagline in the page's own language, deliberately
+            smaller: the steady line the rotating hadith resolves into.
           */}
           <p
             className="rise text-cream-dim text-[clamp(0.95rem,2vw,1.25rem)] leading-relaxed"
-            lang={equivalentLocale}
-            dir={localeDirection[equivalentLocale]}
             style={{ animationDelay: "0.16s" }}
           >
-            {t("equivalent")}
+            {t("tagline")}
           </p>
         </div>
 

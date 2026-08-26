@@ -12,8 +12,13 @@
     "backToTop": "Back to top"
   },
   "hero": {
-    "headline": "Learn with intention. Stay the course.",
-    "equivalent": "اختر ما ينفعك، واثبت عليه.",
+    "phases": {
+      "one": { "lead": "Strive for what", "last": "benefits you," },
+      "two": { "lead": "seek help from", "last": "God," },
+      "three": { "lead": "and never", "last": "give up." }
+    },
+    "hadith": "Strive for what benefits you, seek help from God, and never give up.",
+    "tagline": "Learn with intention. Stay the course.",
     "choicesLabel": "Two ways to start",
     "app": {
       "eyebrow": "Salasel App",

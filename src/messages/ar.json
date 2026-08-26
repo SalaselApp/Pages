@@ -12,8 +12,13 @@
     "backToTop": "العودة إلى الأعلى"
   },
   "hero": {
-    "headline": "اختر ما ينفعك، واثبت عليه.",
-    "equivalent": "Learn with intention. Stay the course.",
+    "phases": {
+      "one": { "lead": "احرِصْ على ما", "last": "ينفعُك" },
+      "two": { "lead": "واستعِنْ", "last": "باللَّه" },
+      "three": { "lead": "ولا", "last": "تعجِزْ" }
+    },
+    "hadith": "احرِصْ على ما ينفعُكَ، واستعِنْ باللَّهِ، ولا تعجِزْ.",
+    "tagline": "اختر ما ينفعك، واثبت عليه.",
     "choicesLabel": "مسارَان للبدء",
     "app": {
       "eyebrow": "تطبيق سلاسل",

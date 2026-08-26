@@ -163,6 +163,88 @@ body {
   }
 }
 
+/* ---------------------------------------------------------------------------
+ * Hero headline — three-phase hadith rotator
+ *
+ * The h1 speaks the hadith "احرِصْ على ما ينفعُكَ واستعِنْ باللَّهِ ولا تعجِزْ"
+ * one clause at a time. All three phrases are stacked in a single grid cell so
+ * the box reserves the tallest phrase's height and never reflows as they swap;
+ * only `opacity` and a small `transform` animate, so there is no layout cost.
+ *
+ * The rotation is pure CSS, so the headline needs no JavaScript to render — the
+ * full hadith is always in the DOM as one accessible line for assistive tech
+ * (`.hero-phrase-sr`), while the visible rotating clauses are `aria-hidden`.
+ *
+ * One cycle shows each of the three clauses in turn. The three phrases run the
+ * same keyframes offset by exactly a third of the duration, and each clause's
+ * fade-out window (33%–44%) lines up in real time with the next clause's
+ * fade-in window (0%–11% of its own, delayed, cycle). Because the two overlap,
+ * one phrase is always dissolving directly into the next — the headline reads
+ * as text-to-text, never text-to-empty-to-text.
+ * ------------------------------------------------------------------------- */
+
+@keyframes salasel-phrase-cycle {
+  /* Drop in from above into place (overlaps the previous clause's fall-out). */
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -0.5em, 0);
+  }
+  11% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  /* Hold. */
+  33% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  /* Sink downward and fade (overlaps the next clause dropping in above it), so
+     the two together read as the line rotating over like a wheel. */
+  44%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0.5em, 0);
+  }
+}
+
+.hero-phrases {
+  display: grid;
+  /* Every phrase shares one grid cell, so the tallest reserves the height and
+     the swap never nudges the mark above or the tagline below. */
+  justify-items: center;
+  align-items: start;
+}
+
+.hero-phrase {
+  grid-area: 1 / 1;
+  opacity: 0;
+  animation: salasel-phrase-cycle 9s ease-in-out infinite both;
+  will-change: opacity, transform;
+}
+
+/* Staggered by exactly a third of the cycle each, so one clause fades out as
+   the next fades in and they hand off in reading order without a gap. */
+.hero-phrase-2 {
+  animation-delay: -6s;
+}
+.hero-phrase-3 {
+  animation-delay: -3s;
+}
+
+/* The full hadith, present for assistive tech only. Visually hidden but read
+   as the h1's text, so screen readers get the complete sentence, not clauses. */
+.hero-phrase-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* A light travelling from one node to the next along a link.
  *
  * The spark is the same <path> as its link, drawn as a short dash and slid
@@ -1080,6 +1162,77 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+ * Section 8 — mobile chain band
+ *
+ * The same chain master as the desktop mark, but laid out for a phone: a wide
+ * horizontal band pinned to the section's bottom, bleeding up from beneath the
+ * product paths. `object-fit: cover` with a bottom anchor keeps the chain's
+ * densest part along the base, and a top-to-bottom fade mask dissolves it into
+ * the canvas so it reads as the page closing rather than a framed picture.
+ *
+ * Two stacked layers, both clipped to the chain's own silhouette by the artwork
+ * alpha (`mask-image` set inline in the component): the <img> relief and one
+ * breathing emerald sheen. No travelling trace here — on a small closing band a
+ * single quiet glow is enough, and it keeps the layer count (and paint cost)
+ * down on mobile.
+ * ------------------------------------------------------------------------- */
+
+.final-mark-mobile {
+  /* Tall enough to sit behind the paths and note without reaching the heading;
+     `vh`-scaled so it keeps that proportion across phone heights. */
+  height: clamp(15rem, 42vh, 22rem);
+  /* Lift the band up off the section's base so the chain sits behind the
+     product paths rather than tucked into the bottom corner. */
+  bottom: clamp(4rem, 14vh, 8rem);
+  /* Dissolve the top edge into the canvas: fully transparent at the top, opaque
+     across the lower half, so the band has no hard seam. */
+  -webkit-mask-image: linear-gradient(
+    to top,
+    #000 40%,
+    rgba(0, 0, 0, 0.55) 70%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to top,
+    #000 40%,
+    rgba(0, 0, 0, 0.55) 70%,
+    transparent 100%
+  );
+}
+
+.final-mark-mobile-img {
+  width: 100%;
+  height: 100%;
+  /* Anchor the chain's dense base to the bottom of the band. The master is a
+     wide canvas with the chain in one third; `cover` scales it up so the links
+     fill the band's width, and the empty canvas falls outside the visible box. */
+  object-fit: cover;
+  object-position: center bottom;
+  opacity: 0.85;
+}
+
+.final-mark-mobile-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    90% 80% at 50% 100%,
+    rgba(72, 168, 140, 0.5) 0%,
+    rgba(48, 143, 107, 0.28) 38%,
+    transparent 70%
+  );
+  opacity: 0.5;
+  animation: salasel-mark-breathe 11s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------------------------
    Back-to-top control
    ---------------------------------------------------------------------------
    A floating pill that appears only once the footer is in view (its `data-shown`
@@ -1156,6 +1309,22 @@ body {
     animation: none !important;
   }
 
+  /* No rotation: the clauses would flash without motion, so the visible
+     rotator is dropped entirely and the full hadith (normally SR-only) is
+     shown as the calm, static headline instead. */
+  .hero-phrases {
+    display: none;
+  }
+  .hero-phrase-sr {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
   /* Show the artwork immediately: no mask, no movement, no delayed visibility. */
   [data-reveal-ready="true"] .reveal-ltr,
   [data-reveal-shown="true"] .reveal-ltr {
@@ -1219,6 +1388,12 @@ body {
   .final-mark-trace {
     animation: none !important;
     display: none;
+  }
+
+  /* Mobile band: keep the static lit chain, drop the breathing. */
+  .final-mark-mobile-sheen {
+    animation: none !important;
+    opacity: 0.5 !important;
   }
 
   /* The travelling lights carry no information, so they simply go away. */

@@ -114,6 +114,41 @@ export async function FinalAction() {
         />
       </div>
 
+      {/*
+        Mobile-only variant of the same Section 8 chain. On a phone the wide
+        full-bleed mark above is hidden (it would sit sideways behind the copy),
+        and echoing the hero's centred glow made the closing read as a rerun of
+        the opener. Instead the chain is laid as a wide horizontal band pinned to
+        the section's bottom, bleeding up from beneath the product paths and
+        dissolving into the canvas through a top fade — the chain drawing the
+        page to a close rather than restating the hero. Same lit-edge language as
+        the desktop mark (sheen + travelling trace), clipped to the chain's own
+        silhouette. Decorative: `aria-hidden`, empty alt, lazy-loaded. `sm:hidden`
+        so it never doubles up with the wide mark.
+      */}
+      <div
+        aria-hidden="true"
+        className="final-mark-mobile pointer-events-none absolute inset-x-0 bottom-0 -z-10 sm:hidden"
+      >
+        <Image
+          src={MARK.src}
+          alt=""
+          width={MARK.width}
+          height={MARK.height}
+          loading="lazy"
+          decoding="async"
+          sizes="100vw"
+          className="final-mark-mobile-img"
+        />
+        <div
+          className="final-mark-mobile-sheen"
+          style={{
+            maskImage: `url(${MARK.src})`,
+            WebkitMaskImage: `url(${MARK.src})`,
+          }}
+        />
+      </div>
+
       {/* Soft emerald bloom behind the mark, echoing the page's restrained glow
           language. Anchored to the same reading-end edge. */}
       <div
@@ -126,7 +161,7 @@ export async function FinalAction() {
         }
       />
 
-      <RevealOnView className="mx-auto flex w-full max-w-[64rem] flex-col items-center gap-6 px-6 py-24 text-center sm:px-10 sm:py-28 lg:py-32">
+      <RevealOnView className="relative mx-auto flex w-full max-w-[64rem] flex-col items-center gap-6 px-6 py-20 text-center sm:px-10 sm:py-28 lg:py-32">
         <p className="reveal-rise text-teal-brand text-sm font-medium tracking-[0.16em] uppercase">
           {t("eyebrow")}
         </p>

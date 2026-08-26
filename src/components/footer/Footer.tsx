@@ -102,27 +102,31 @@ export async function Footer() {
         {t("navLabel")}
       </h2>
 
-      <div className="mx-auto grid w-full max-w-[86rem] grid-cols-1 gap-x-16 gap-y-12 px-6 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-x-24">
+      <div className="mx-auto grid w-full max-w-[86rem] grid-cols-1 gap-x-16 gap-y-10 px-6 py-12 sm:px-10 sm:py-16 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-x-24 lg:py-20">
         {/* Brand column: the lockup and a one-sentence mission. */}
-        <div className="flex max-w-sm flex-col gap-4">
+        <div className="flex max-w-sm flex-col gap-3">
           <Brand />
-          <p className="text-cream-dim text-[clamp(0.9375rem,1.4vw,1.0625rem)] leading-relaxed text-balance">
+          <p className="text-cream-dim max-w-[38ch] text-[clamp(0.9375rem,1.4vw,1.0625rem)] leading-relaxed">
             {t("mission")}
           </p>
         </div>
 
-        {/* Link groups on the reading-end edge. Wrap comfortably on small
-            viewports, sit in a row from `sm` up. */}
+        {/*
+          Link groups on the reading-end edge. On a phone the three groups sit
+          in a single flex row that wraps — Product and Privacy pair up, and the
+          single-link Openness group tucks in beside them rather than orphaning
+          into its own lopsided grid row. From `sm` up they line up as one row.
+        */}
         <nav
           aria-label={t("navLabel")}
-          className="grid grid-cols-2 gap-x-12 gap-y-10 sm:flex sm:gap-x-16"
+          className="flex flex-wrap gap-x-10 gap-y-8 sm:gap-x-16"
         >
           {groups.map((group) => (
-            <div key={group.title} className="flex flex-col gap-4">
+            <div key={group.title} className="flex flex-col gap-3.5">
               <h3 className="text-cream-faint text-xs font-medium tracking-[0.16em] uppercase">
                 {group.title}
               </h3>
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-1">
                 {group.links.map((link) => (
                   <li key={link.label}>
                     <FooterLinkItem

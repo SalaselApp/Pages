@@ -82,7 +82,7 @@ export function MeaningChain({
       emit phantom rules.)
     */
     <RevealOnView
-      className={`relative mx-auto w-[68%] max-w-[20rem] sm:w-[56%] sm:max-w-[22rem] xl:absolute xl:bottom-0 xl:end-[4vw] xl:mx-0 xl:w-[38rem] xl:max-w-[38rem] ${
+      className={`relative mx-auto hidden w-[68%] max-w-[20rem] md:block md:w-[56%] md:max-w-[22rem] xl:absolute xl:bottom-0 xl:end-[4vw] xl:mx-0 xl:w-[38rem] xl:max-w-[38rem] ${
         /* English LTR: mirror the whole positioning box so the chain bleeds off
            its trailing (physical-right) edge, the same distance from that edge
            as it sits from the left in Arabic. The flip lives here, on the outer
