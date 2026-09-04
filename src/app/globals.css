@@ -184,26 +184,31 @@ body {
  * ------------------------------------------------------------------------- */
 
 @keyframes salasel-phrase-cycle {
-  /* Drop in from above into place (overlaps the previous clause's fall-out). */
+  /* Rise in while a soft blur resolves to sharp (overlaps the previous clause's
+     fall-out), so clauses dissolve into one another rather than hard-cutting. */
   0% {
     opacity: 0;
-    transform: translate3d(0, -0.5em, 0);
+    transform: translate3d(0, -0.4em, 0);
+    filter: blur(6px);
   }
   11% {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+    filter: blur(0);
   }
-  /* Hold. */
+  /* Hold, fully sharp. */
   33% {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+    filter: blur(0);
   }
-  /* Sink downward and fade (overlaps the next clause dropping in above it), so
-     the two together read as the line rotating over like a wheel. */
+  /* Sink downward, fade, and blur back out (overlaps the next clause resolving
+     in above it), so the two together read as the line softly rotating over. */
   44%,
   100% {
     opacity: 0;
-    transform: translate3d(0, 0.5em, 0);
+    transform: translate3d(0, 0.4em, 0);
+    filter: blur(6px);
   }
 }
 
@@ -219,16 +224,31 @@ body {
   grid-area: 1 / 1;
   opacity: 0;
   animation: salasel-phrase-cycle 9s ease-in-out infinite both;
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
 
-/* Staggered by exactly a third of the cycle each, so one clause fades out as
-   the next fades in and they hand off in reading order without a gap. */
+/*
+ * Timed so the FIRST clause is always the one on screen at load, fully resolved
+ * and holding — never a fragment caught mid-transition.
+ *
+ * `-1s` puts clause 1 exactly at the end of its fade-in (11% of a 9s cycle) at
+ * t=0, so it appears sharp and centred the instant the page paints, then holds.
+ * Clauses 2 and 3 use POSITIVE delays, so with `both` fill they sit on their
+ * hidden 0% frame (opacity 0, blurred) until their turn actually arrives —
+ * nothing else is visible at load. Each subsequent clause then hands off 3s
+ * after the last (one third of the 9s cycle), preserving reading order 1→2→3.
+ *
+ * This is deterministic across reloads: the same clause 1 always greets a fresh
+ * page, and the rotation only begins once it has been read.
+ */
+.hero-phrase-1 {
+  animation-delay: -1s;
+}
 .hero-phrase-2 {
-  animation-delay: -6s;
+  animation-delay: 2s;
 }
 .hero-phrase-3 {
-  animation-delay: -3s;
+  animation-delay: 5s;
 }
 
 /* The full hadith, present for assistive tech only. Visually hidden but read
