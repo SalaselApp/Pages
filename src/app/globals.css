@@ -1090,7 +1090,12 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left center;
+  /* Anchor to the top edge, not the centre: when the section is shorter than
+     the chain's own aspect ratio, `cover` has to crop vertically, and a centred
+     anchor slices the chain's top links off (they sit right at the top of the
+     art). Pinning the top keeps the full top of the chain visible and lets any
+     overflow fall off the bottom edge, which bleeds into the footer seam. */
+  object-position: left top;
 }
 
 /* Shared mask setup for the two glow layers: the artwork's own alpha clips the
@@ -1104,8 +1109,10 @@ body {
   pointer-events: none;
   -webkit-mask-size: cover;
   mask-size: cover;
-  -webkit-mask-position: left center;
-  mask-position: left center;
+  /* Match `.final-mark-img`'s top anchor exactly, so the masked glow layers
+     stay registered pixel-for-pixel with the artwork after the top-crop fix. */
+  -webkit-mask-position: left top;
+  mask-position: left top;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   mix-blend-mode: screen;
