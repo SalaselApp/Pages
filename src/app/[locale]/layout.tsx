@@ -32,9 +32,38 @@ export async function generateMetadata(
     namespace: "metadata",
   });
 
+  const title = t("title");
+  const description = t("description");
+  // Absolute base for OG/Twitter asset URLs. Set `NEXT_PUBLIC_SITE_URL` to the
+  // production origin; falls back to the known site so previews still resolve.
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://salasel.app";
+
   return {
-    title: t("title"),
-    description: t("description"),
+    metadataBase: new URL(siteUrl),
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      siteName: "Salasel",
+      locale: locale === "ar" ? "ar_SA" : "en_US",
+      type: "website",
+      // 1:1 share card built from the brand mark on the hero's navy glow.
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 1200,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-image.png"],
+    },
   };
 }
 

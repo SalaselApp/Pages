@@ -123,7 +123,7 @@ export async function Privacy() {
 
           <h2
             id="privacy-heading"
-            className="reveal-rise text-[clamp(2rem,4.6vw,3.5rem)] leading-[1.1] font-semibold tracking-[-0.02em] text-balance"
+            className="reveal-rise text-[clamp(2rem,4.6vw,3.5rem)] leading-[1.1] font-semibold text-balance"
             style={{ animationDelay: "0.08s" }}
           >
             <span className="block">{t("headingLead")}</span>
@@ -213,7 +213,11 @@ export async function Privacy() {
                 ].join(" ")}
                 style={
                   {
-                    animationDelay: `${0.12 + index * 0.08}s`,
+                    // A pronounced per-claim stagger so the four guarantees read
+                    // as arriving one after another — header first, then each
+                    // claim in turn — rather than the whole column appearing as
+                    // one block.
+                    animationDelay: `${0.15 + index * 0.22}s`,
                     "--rule-dir": dir === "rtl" ? "left" : "right",
                   } as React.CSSProperties
                 }
