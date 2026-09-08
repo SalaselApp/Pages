@@ -1,11 +1,9 @@
-import { redirect } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { BrowserLocaleRedirect } from "@/components/BrowserLocaleRedirect";
 
 /**
- * A static export runs no middleware, so `/` cannot negotiate a locale. It
- * redirects to the default locale instead, which Next.js emits as a static
- * redirect at build time.
+ * A static export runs no middleware, so `/` chooses a locale in the browser
+ * after hydration.
  */
 export default function RootPage() {
-  redirect(`/${routing.defaultLocale}`);
+  return <BrowserLocaleRedirect />;
 }
