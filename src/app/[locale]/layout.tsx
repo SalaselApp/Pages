@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { shareMetadata } from "@/config/metadata";
 import { notFound } from "next/navigation";
 import { IBM_Plex_Sans_Arabic, Inter } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
@@ -32,39 +33,7 @@ export async function generateMetadata(
     namespace: "metadata",
   });
 
-  const title = t("title");
-  const description = t("description");
-  // Absolute base for OG/Twitter asset URLs. Set `NEXT_PUBLIC_SITE_URL` to the
-  // production origin; falls back to the known site so previews still resolve.
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://salasel.app";
-
-  return {
-    metadataBase: new URL(siteUrl),
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      siteName: "Salasel",
-      locale: locale === "ar" ? "ar_SA" : "en_US",
-      type: "website",
-      // 1:1 share card built from the brand mark on the hero's navy glow.
-      images: [
-        {
-          url: "/og-image.png",
-          width: 1200,
-          height: 1200,
-          alt: title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ["/og-image.png"],
-    },
-  };
+  return shareMetadata(t("title"), t("description"), locale);
 }
 
 export default async function LocaleLayout({
