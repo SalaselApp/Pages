@@ -25,17 +25,14 @@ export const links = {
     external: true,
   },
   /**
-   * Chrome Web Store listing. The extension is not published yet, so until its
-   * real listing URL is known this points at the Chrome Web Store home (set via
-   * `NEXT_PUBLIC_EXTENSION_URL` once the listing exists). It is still marked
-   * `pending` so the provisional destination is surfaced in the handoff, and it
-   * opens in a new tab.
+   * Chrome Web Store listing. Uses the supplied listing as the default, with
+   * an optional build-time `NEXT_PUBLIC_EXTENSION_URL` override.
    */
   extension: {
     href:
       process.env.NEXT_PUBLIC_EXTENSION_URL ??
-      "https://chromewebstore.google.com/",
-    pending: !process.env.NEXT_PUBLIC_EXTENSION_URL,
+      "https://chromewebstore.google.com/detail/jpbdellidndlbbmhkipejbjpgfgekneo",
+    pending: false,
     external: true,
   },
   /**
